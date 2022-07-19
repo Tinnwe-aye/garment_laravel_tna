@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\TestRepository;
+use App\Interfaces\TestRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -13,16 +15,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
-    }
-
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
+        $this->app->bind(TestRepositoryInterface::class, TestRepository::class);
     }
 }
