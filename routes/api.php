@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Tailor\TailorListController;
+use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::prefix('tailor-list')->group(function () {
+    Route::get('search-tailor',[TailorListController::class, 'search']);
+    Route::post('delete-tailor',[TailorListController::class, 'destroy']);
 });
+Route::prefix('tailor-register')->group(function () {
+    Route::post('register-tailor',[TailorRegistrationController::class, 'store']);
+    Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
+    Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
+});
+
+
+
