@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Repositories\TestRepository;
+use Illuminate\Support\ServiceProvider;
 use App\Interfaces\TestRepositoryInterface;
+use App\Repositories\Tailor\TailorRepository;
+use App\Interfaces\Tailor\TailorRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -16,5 +18,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(TestRepositoryInterface::class, TestRepository::class);
+        $this->app->bind(TailorRepositoryInterface::class, TailorRepository::class);
     }
 }
