@@ -20,15 +20,15 @@ use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-// Route::prefix('tailor-list')->group(function () {
-//     Route::get('search-tailor',[TailorListController::class, 'search']);
-//     Route::post('delete-tailor',[TailorListController::class, 'destroy']);
-// });
-// Route::prefix('tailor-register')->group(function () {
-//     Route::post('register-tailor',[TailorRegistrationController::class, 'store']);
-//     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
-//     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
-// });
+Route::prefix('tailor-list')->group(function () {
+    Route::get('search-tailor',[TailorListController::class, 'search']);
+    Route::post('delete-tailor',[TailorListController::class, 'destroy']);
+});
+Route::prefix('tailor-register')->group(function () {
+    Route::post('register-tailor',[TailorRegistrationController::class, 'store']);
+    Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
+    Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
+});
 
 Route::post('raw-register',[RawMaterialController::class, 'store']);
 
