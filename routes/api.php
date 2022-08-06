@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Raw\RawMaterialController;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 
@@ -27,6 +29,8 @@ Route::prefix('tailor-register')->group(function () {
     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
 });
+
+Route::post('raw-register',[RawMaterialController::class, 'store']);
 
 
 
