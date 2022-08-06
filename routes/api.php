@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
+use App\Http\Controllers\API\Product\ProductListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,12 @@ Route::prefix('tailor-register')->group(function () {
     Route::post('register-tailor',[TailorRegistrationController::class, 'store']);
     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
+});
+Route::prefix('product-list')->group(function () {
+    Route::get('searchTailor',[ProductListController::class, 'searchTailor']);
+    Route::get('searchTailorByID',[ProductListController::class, 'searchTailorByID']);
+    Route::get('search-product',[ProductListController::class, 'search']);
+    Route::post('delete-product',[ProductListController::class, 'destroy']);
 });
 
 
