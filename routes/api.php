@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Raw\RawMaterialController;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\Product\ProductListController;
@@ -34,6 +36,8 @@ Route::prefix('product-list')->group(function () {
     Route::get('search-product',[ProductListController::class, 'search']);
     Route::post('delete-product',[ProductListController::class, 'destroy']);
 });
+
+Route::post('raw-register',[RawMaterialController::class, 'store']);
 
 
 
