@@ -21,7 +21,7 @@ class CreateTailorsTable extends Migration
             $table->integer('phone_no');
             $table->string('nrc_no');
             $table->string('address');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->softDeletes();
             $table->integer('created_emp');
             $table->integer('updated_emp');
