@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
         DB::table("admins")->truncate();
         DB::table("admins")->insert(array(
             array(
-                "admin_id"      =>  "2001",
+                "admin_id"      =>  "1001",
                 "name"          =>  "U Mya",
                 "password"      =>  12345,
                 "created_emp"   =>  "1001",
@@ -27,7 +27,7 @@ class AdminSeeder extends Seeder
                 "updated_at"    =>  Carbon::now()->format("Y-m-d H:i:s")
             ),
             array(
-                "admin_id"      =>  "2002",
+                "admin_id"      =>  "1002",
                 "name"          =>  "U Hla",
                 "password"      =>  12345,
                 "created_emp"   =>  "1001",
