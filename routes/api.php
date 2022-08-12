@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
+use App\Http\Controllers\API\Supplier\SupplierController;
+use Illuminate\Http\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,18 @@ Route::prefix('tailor-register')->group(function () {
     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
 });
+Route::prefix('supplier-register')->group(function () {
+    Route::post('register-supplier',[SupplierController::class, 'store']);
+    // Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
+    // Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
+});
+
+// Route::get('test', function(){
+//     return response()->json([
+//         'status' =>  'dd',
+//         'message' => "ok Pr",
+//     ],200);
+// });
 
 
 
