@@ -37,7 +37,15 @@ Route::prefix('product-list')->group(function () {
     Route::post('delete-product',[ProductListController::class, 'destroy']);
 });
 
-Route::post('raw-register',[RawMaterialController::class, 'store']);
+
+
+Route::prefix('raws')->group(function () {
+    Route::post('raw-register',[RawMaterialController::class, 'store']);
+    Route::get('raw-search',[RawMaterialController::class, 'index']);
+    Route::post('raw-delete',[RawMaterialController::class, 'destroy']);
+    Route::post('raw-edit/{id}',[RawMaterialController::class, 'show']);
+    Route::put('raw-update/{id}',[RawMaterialController::class, 'update']);
+});
 
 
 

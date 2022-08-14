@@ -148,20 +148,40 @@ class RawMaterialController extends Controller
      */
     public function destroy(Request $request)
     {
-        try {//dd($request);
+        // try {//dd($request);
 
-           
-                Raws::whereIn('id', $request->id)
-                    ->whereNull('deleted_at')
-                    ->delete();
-       
 
+        //         Raws::whereIn('id', $request->id)
+        //             ->whereNull('deleted_at')
+        //             ->delete();
+
+
+        //     return response()->json([
+        //         'status' =>  'OK',
+        //         'message'   => 'Successfully deleted!',
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        // }
+
+        try {
+            if (!Raws::whereIn('id', $request->id)->exists()) {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message'   =>  trans('errorMessage.ER007'),
+                ], 200);
+            }
+            Raws::whereIn('id', $request->id)->delete();
             return response()->json([
-                'status' =>  'OK',
-                'message'   => 'Successfully deleted!',
+                'status' => 'OK',
+                'message'   =>  trans('successMessage.SS003'),
             ], 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ], 200);
         }
+        //
     }
-} 
+}
