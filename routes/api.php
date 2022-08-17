@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Raw\RawMaterialController;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\Supplier\SupplierController;
 use Illuminate\Http\Response;
+use App\Http\Controllers\API\Product\ProductListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +32,23 @@ Route::prefix('tailor-register')->group(function () {
     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
 });
+Route::prefix('product-list')->group(function () {
+    Route::get('searchTailor',[ProductListController::class, 'searchTailor']);
+    Route::get('searchTailorByID',[ProductListController::class, 'searchTailorByID']);
+    Route::get('search-product',[ProductListController::class, 'search']);
+    Route::post('delete-product',[ProductListController::class, 'destroy']);
+});
+
+
+
+Route::prefix('raws')->group(function () {
+    Route::post('raw-register',[RawMaterialController::class, 'store']);
+    Route::get('raw-search',[RawMaterialController::class, 'index']);
+    Route::post('raw-delete',[RawMaterialController::class, 'destroy']);
+    Route::post('raw-edit/{id}',[RawMaterialController::class, 'show']);
+    Route::put('raw-update/{id}',[RawMaterialController::class, 'update']);
+});
+
 Route::prefix('supplier')->group(function () {
     Route::post('create',[SupplierController::class, 'saveSupplier']);
     Route::get('retrieve',[SupplierController::class, 'getSupplierList']);
@@ -36,12 +56,6 @@ Route::prefix('supplier')->group(function () {
     Route::post('delete',[SupplierController::class, 'removeSupplier']);
 });
 
-// Route::get('test', function(){
-//     return response()->json([
-//         'status' =>  'dd',
-//         'message' => "ok Pr",
-//     ],200);
-// });
 
 
 

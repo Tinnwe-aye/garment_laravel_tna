@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTailorsTable extends Migration
+class CreateTailorProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,13 @@ class CreateTailorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tailors', function (Blueprint $table) {
+        Schema::create('tailor_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('tailor_id');
-            $table->string('name_mm');
-            $table->string('name_en');
-            $table->integer('phone_no');
-            $table->string('nrc_no');
-            $table->string('address');
-            $table->string('description')->nullable();
+            $table->date('date');
+            $table->integer('tailor_id')->comment('foreign Key from tailors');
+            $table->integer('total_qty');
+            $table->integer('total_amount');
             $table->softDeletes();
-            $table->integer('created_emp');
-            $table->integer('updated_emp');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
@@ -37,6 +32,6 @@ class CreateTailorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tailors');
+        Schema::dropIfExists('tailor_products');
     }
 }

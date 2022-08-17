@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTailorsTable extends Migration
+class CreateSizesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateTailorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tailors', function (Blueprint $table) {
+        Schema::create('sizes', function (Blueprint $table) {
             $table->id();
-            $table->integer('tailor_id');
-            $table->string('name_mm');
-            $table->string('name_en');
-            $table->integer('phone_no');
-            $table->string('nrc_no');
-            $table->string('address');
-            $table->string('description')->nullable();
+            $table->string('size');
+            $table->string('name');
             $table->softDeletes();
             $table->integer('created_emp');
             $table->integer('updated_emp');
@@ -37,6 +32,6 @@ class CreateTailorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tailors');
+        Schema::dropIfExists('sizes');
     }
 }

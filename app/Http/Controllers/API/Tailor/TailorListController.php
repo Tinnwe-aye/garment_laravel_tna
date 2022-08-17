@@ -25,7 +25,7 @@ class TailorListController extends Controller
         try {
             $data = $this->tailorRepo->getTailorData();
             $tailorData = $data->map(function($data,$key) {
-                return ["id"=>$data['id'],"tailorId"=>$data['tailor_id'],"nameMm"=>$data['name_mm'],
+                return ["no"=>$key+1,"id"=>$data['id'],"tailorId"=>$data['tailor_id'],"nameMm"=>$data['name_mm'],
                         "nameEn"=>$data['name_en'],"phoneNo"=>$data['phone_no'],"nrcNo"=>$data['nrc_no']
                         ,"description"=>$data['description'],"address"=>$data['address']];
             });
