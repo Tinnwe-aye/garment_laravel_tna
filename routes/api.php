@@ -29,10 +29,11 @@ Route::prefix('tailor-register')->group(function () {
     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
 });
-Route::prefix('supplier-register')->group(function () {
-    Route::post('register-supplier',[SupplierController::class, 'store']);
-    // Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
-    // Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
+Route::prefix('supplier')->group(function () {
+    Route::post('create',[SupplierController::class, 'saveSupplier']);
+    Route::get('retrieve',[SupplierController::class, 'getSupplierList']);
+    Route::post('update',[SupplierController::class, 'editSupplier']);
+    Route::post('delete',[SupplierController::class, 'removeSupplier']);
 });
 
 // Route::get('test', function(){

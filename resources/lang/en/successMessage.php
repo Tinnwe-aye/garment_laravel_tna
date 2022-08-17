@@ -11,6 +11,7 @@ return [
     'SS008' => 'Confirmed Successfully!',
     'SS009' => 'Rejected Successfully!',
     'SS010' => 'Successfully Upload File!',
+    'SS011' => 'Data does not exist!',
 
 
 ];

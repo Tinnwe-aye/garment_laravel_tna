@@ -17,11 +17,11 @@ class CreateSuppliersTable extends Migration
             $table->id();
             $table->string('name_mm');
             $table->string('name_en');
-            $table->string('phone_no', 20);
-            $table->string('email');
-            $table->string('company');
+            $table->string('phone_no', 250);
+            $table->string('email')->nullable();
+            $table->string('company')->nullable();
             $table->string('address');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->softDeletes();
             $table->integer('created_emp');
             $table->integer('updated_emp');
