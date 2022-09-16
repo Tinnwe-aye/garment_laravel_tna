@@ -5,14 +5,19 @@ namespace App\Http\Controllers\API\Product;
 use App\Models\Tailor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use App\Interfaces\Tailor\TailorRepositoryInterface;
+use App\Interfaces\Product\ProductRepositoryInterface;
 
 class ProductListController extends Controller
 {
-    protected $tailorRepo;
-    public function __construct(TailorRepositoryInterface $tailorRepo)
+    protected $tailorRepo,$productRepo;
+    public function __construct(TailorRepositoryInterface $tailorRepo
+                               ,ProductRepositoryInterface $productRepo
+                                )
     {
         $this->tailorRepo = $tailorRepo;
+        $this->productRepo = $productRepo;
     }
     /**
      * Display a listing of the resource.
@@ -101,5 +106,55 @@ class ProductListController extends Controller
        $data = $this->tailorRepo->getTailorData();
        $TailorData = $data->where('tailor_id',$request->tailor_id);
        return  $TailorData->pluck('name_en');
+    }
+    
+    public function search(Request $request)
+    {
+        try{
+            $datas = $this->productRepo->searchData($request);
+            $i = 0 ;
+            if(count($datas) > 0){
+                $results = [];
+                $language = $request->language;
+                $DataByEmp = $datas->mapToGroups(function ($item, $key) {
+                    return [$item['tailor_id'] => $item];
+                    });
+                    $DataByEmp = $DataByEmp->all();
+            
+                foreach ($DataByEmp as $key => $values) 
+                { 
+                    $DataByDate =$values->mapToGroups(function ($items, $key) {
+                        return [$items['date'] => $items];
+                    });
+
+                    foreach ($DataByDate as $key => $val) {
+                        $item[$i]['Date'] =  $key;
+                        $item[$i]['tailor_id'] =  $val['0']['tailor_id'];
+                        $item[$i]['name'] =  ($language == 'en') ? $val['0']['name_en'] : $val['0']['name_mm'];
+                        $item[$i]['totalQty'] = $val->sum('qty');
+                        $item[$i]['totalAmt'] = $val->sum('totalAmount');
+                        $item[$i]['allData'] = $val;
+                        $i++;
+                    }    
+                }
+                
+                return response()->json([
+                    'status' =>  'OK',
+                    'row_count'=>count($item),
+                    'data'   =>   $item,
+                ],200);
+            } else {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER009'),
+                ],200);
+            }
+        } catch (\Throwable $th) {
+            log::debug($th);
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
     }
 }

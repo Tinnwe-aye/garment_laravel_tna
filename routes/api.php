@@ -32,14 +32,11 @@ Route::prefix('tailor-register')->group(function () {
     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
 });
-Route::prefix('product-list')->group(function () {
+Route::prefix('product-in-list')->group(function () {
     Route::get('searchTailor',[ProductListController::class, 'searchTailor']);
     Route::get('searchTailorByID',[ProductListController::class, 'searchTailorByID']);
-    Route::get('search-product',[ProductListController::class, 'search']);
-    Route::post('delete-product',[ProductListController::class, 'destroy']);
+    Route::post('search-product',[ProductListController::class, 'search']);
 });
-
-
 
 Route::prefix('raws')->group(function () {
     Route::post('raw-register',[RawMaterialController::class, 'store']);

@@ -9,8 +9,8 @@ use App\Repositories\Tailor\TailorRepository;
 use App\Repositories\Supplier\SupplierRepository;
 use App\Interfaces\Tailor\TailorRepositoryInterface;
 use App\Interfaces\Supplier\SupplierRepositoryInterface;
-use App\Repositories\Tailor\ProductRepository;
-use App\Interfaces\Tailor\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepository;
+use App\Interfaces\Product\ProductRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
