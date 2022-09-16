@@ -16,8 +16,9 @@ class CreateProductInTable extends Migration
         Schema::create('product_in', function (Blueprint $table) {
             $table->id();
             $table->date('date');
+            $table->integer('tailor_id');
             $table->integer('product_id')->comment('foreign Key from products');
-            $table->integer('product_size');
+            $table->integer('size_id');
             $table->integer('qty');
             $table->integer('price');
             $table->integer('total_amount');
