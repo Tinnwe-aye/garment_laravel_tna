@@ -8,6 +8,8 @@ use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\Supplier\SupplierController;
 use Illuminate\Http\Response;
 use App\Http\Controllers\API\Product\ProductListController;
+use App\Http\Controllers\API\Township\TownshipController;
+use App\Http\Controllers\API\Customer\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +53,19 @@ Route::prefix('supplier')->group(function () {
     Route::get('retrieve',[SupplierController::class, 'getSupplierList']);
     Route::post('update',[SupplierController::class, 'editSupplier']);
     Route::post('delete',[SupplierController::class, 'removeSupplier']);
+});
+
+Route::prefix('customer')->group(function () {
+    Route::post('storeCustomer',[CustomerController::class, 'store']);
+    Route::get('getCustomerList',[CustomerController::class, 'show']);
+    Route::post('editCustomer',[CustomerController::class, 'edit']);
+    Route::post('updateCustomer',[CustomerController::class, 'update']);
+    Route::post('deleteCustomer',[CustomerController::class, 'destory']);
+    Route::get('getCustomerId',[CustomerController::class, 'getCustomerId']);
+});
+
+Route::prefix('township')->group(function () {
+    Route::get('getTownship',[TownshipController::class, 'index']);
 });
 
 

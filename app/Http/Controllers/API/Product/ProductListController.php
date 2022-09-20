@@ -129,7 +129,7 @@ class ProductListController extends Controller
 
                     foreach ($DataByDate as $key => $val) {
                         $item[$i]['Date'] =  $key;
-                        $item[$i]['tailor_id'] =  $val['0']['tailor_id'];
+                        $item[$i]['tailorId'] =  $val['0']['tailor_id'];
                         $item[$i]['name'] =  ($language == 'en') ? $val['0']['name_en'] : $val['0']['name_mm'];
                         $item[$i]['totalQty'] = $val->sum('qty');
                         $item[$i]['totalAmt'] = $val->sum('totalAmount');
