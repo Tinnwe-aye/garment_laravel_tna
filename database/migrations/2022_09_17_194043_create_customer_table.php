@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSuppliersTable extends Migration
+class CreateCustomerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,24 @@ class CreateSuppliersTable extends Migration
      */
     public function up()
     {
-        Schema::create('suppliers', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_id');
             $table->string('name_mm');
             $table->string('name_en');
-            $table->string('phone_no', 250);
-            $table->string('email')->nullable();
-            $table->string('company')->nullable();
+            $table->integer('phone_no');
+            $table->string('email',50)->nullable();
+            $table->string('nrc_no');
             $table->string('address');
-            $table->text('comment')->nullable();
+            $table->string('township_id');
+            $table->string('status');
+            $table->string('description')->nullable();
+            $table->timestamp('join_date')->useCurrent();
             $table->softDeletes();
             $table->integer('created_emp');
             $table->integer('updated_emp');
             $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
@@ -37,6 +41,6 @@ class CreateSuppliersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('suppliers');
+        Schema::dropIfExists('customers');
     }
 }
