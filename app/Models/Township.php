@@ -10,4 +10,7 @@ class Township extends Model
 {
     use SoftDeletes;
     use HasFactory;
+    protected $hidden = [
+        'created_emp', 'updated_emp', 'created_at' ,'updated_at'
+    ];
 }
