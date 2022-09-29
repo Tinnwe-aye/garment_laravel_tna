@@ -58,14 +58,16 @@ Route::prefix('supplier')->group(function () {
 Route::prefix('customer')->group(function () {
     Route::post('storeCustomer',[CustomerController::class, 'store']);
     Route::get('getCustomerList',[CustomerController::class, 'show']);
-    Route::post('editCustomer',[CustomerController::class, 'edit']);
+    Route::get('editCustomer/{id}',[CustomerController::class, 'edit']);
     Route::post('updateCustomer',[CustomerController::class, 'update']);
-    Route::post('deleteCustomer',[CustomerController::class, 'destory']);
+    Route::post('deleteCustomer',[CustomerController::class, 'destroy']);
     Route::get('getCustomerId',[CustomerController::class, 'getCustomerId']);
+    // Route::get('getAllCustomerId',[CustomerController::class, 'getAllCustomerId']);
 });
 
 Route::prefix('township')->group(function () {
     Route::get('getTownship',[TownshipController::class, 'index']);
+    Route::post('storeTownship',[TownshipController::class, 'store']);
 });
 
 

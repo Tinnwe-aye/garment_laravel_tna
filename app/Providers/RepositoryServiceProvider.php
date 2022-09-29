@@ -11,6 +11,8 @@ use App\Interfaces\Tailor\TailorRepositoryInterface;
 use App\Interfaces\Supplier\SupplierRepositoryInterface;
 use App\Repositories\Product\ProductRepository;
 use App\Interfaces\Product\ProductRepositoryInterface;
+use App\Repositories\Customer\CustomerRepository;
+use App\Interfaces\Customer\CustomerRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -25,5 +27,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TailorRepositoryInterface::class, TailorRepository::class);
         $this->app->bind(SupplierRepositoryInterface::class, SupplierRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
     }
 }

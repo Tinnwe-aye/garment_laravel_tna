@@ -4,7 +4,10 @@ namespace App\Http\Controllers\API\Township;
 
 use App\Models\Township;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use App\DBTransactions\Township\SaveTownship;
 
 class TownshipController extends Controller
 {
@@ -45,7 +48,39 @@ class TownshipController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name' => 'required | unique:townships'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status'    =>  'NG',
+                'message'   =>  $validator->errors()->all(),
+            ],200);
+        }
+       
+        try {
+            $save = new SaveTownship($request);            
+            $bool = $save->process();
+            if ($bool['status']) {
+                return response()->json([
+                    'status'    =>  'OK',
+                    'message'   =>  trans('successMessage.SS001'),
+                ],200);
+            }else{
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER005'),
+                ],200);
+            }
+        } catch (\Throwable $th) {
+            log::info($th);
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
+        
     }
 
     /**
