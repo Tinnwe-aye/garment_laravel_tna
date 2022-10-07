@@ -70,9 +70,9 @@ class SupplierController extends Controller
                 'name_en' => $data['name_en'],
                 'phone_no' => $data['phone_no'],
                 'email' => $data['email'],
-                'company' => $data['company'], 
+                'businessName' => $data['businessName'], 
                 'address' => $data['address'], 
-                'comment' => $data['comment']];
+                'description' => $data['description']];
             });
             
             if(empty($clean_data)){

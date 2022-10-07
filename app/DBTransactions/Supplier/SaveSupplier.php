@@ -25,14 +25,15 @@ class SaveSupplier extends Transaction  {
     public function process()
     {
         $row_count = Supplier::count()+1;
+        // dd($this->request);
         $row = Supplier::create([
             'name_mm' => $this->request->name_mm,
             'name_en' => $this->request->name_en,
             'phone_no' => $this->request->phone_no,
             'email' => $this->request->email,
-            'company' => $this->request->company,
+            'businessName' => $this->request->businessName,
             'address' => $this->request->address,
-            'comment' => $this->request->comment,
+            'description' => $this->request->description,
             'created_emp' => $this->request->login_id,
             'updated_emp' => $this->request->login_id,
         ]);
