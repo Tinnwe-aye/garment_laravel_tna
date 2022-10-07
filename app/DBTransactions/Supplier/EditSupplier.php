@@ -22,9 +22,9 @@ class EditSupplier extends Transaction  {
             'name_en' => $this->request->name_en,
             'phone_no' => $this->request->phone_no,
             'email' => $this->request->email,
-            'company' => $this->request->company,
+            'businessName' => $this->request->businessName,
             'address' => $this->request->address,
-            'comment' => $this->request->comment,
+            'description' => $this->request->description,
             'updated_emp' => $this->request->login_id,
          ]);
 
