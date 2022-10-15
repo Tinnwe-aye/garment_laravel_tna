@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\API\Product\ProductListController;
 use App\Http\Controllers\API\Township\TownshipController;
 use App\Http\Controllers\API\Customer\CustomerController;
+use App\Http\Controllers\API\SupplierTransactionList\SupplierTransactionListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,9 @@ Route::prefix('township')->group(function () {
     Route::post('storeTownship',[TownshipController::class, 'store']);
 });
 
-
+Route::prefix('supplier-transaction-list')->group(function () {
+    Route::get('search-supplier-transaction',[SupplierTransactionListController::class, 'search']);
+   
+});
 
 
