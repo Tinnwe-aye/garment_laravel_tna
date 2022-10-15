@@ -19,8 +19,7 @@ class RawMaterialController extends Controller
     public function index()
     {
         try {
-            $data       = Raws::whereNull('deleted_at')
-                ->get();
+            $data       = Raws::whereNull('deleted_at')->get();
             $rawsData   = $data->map(function ($data, $key) {
                 $data['key'] = $key + 1;
                 return $data;
