@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\SupplierTransactionList;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Interfaces\SupplierTransaction\SupplierTransactionRepositoryInterface;
-use App\Models\SupplierTransaction;
+
 
 class SupplierTransactionListController extends Controller
 {
@@ -19,6 +19,7 @@ class SupplierTransactionListController extends Controller
         try{
           
             $data = $this->supplierTransactionRepo->getSupplierTransactionData($request);
+            dd($data);
             return response()->json([
                 'status' =>  'OK',
                 'row_count'=>count($data),

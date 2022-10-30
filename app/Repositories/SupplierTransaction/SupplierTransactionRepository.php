@@ -2,10 +2,11 @@
 
 namespace App\Repositories\SupplierTransaction;
 
-use App\Models\SupplierTransaction;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use App\Models\BankFileName;
 use Illuminate\Support\Facades\DB;
+use App\Models\SupplierTransaction;
 use Illuminate\Support\Facades\Log;
 use App\Interfaces\SupplierTransaction\SupplierTransactionRepositoryInterface;
 
@@ -27,13 +28,35 @@ class SupplierTransactionRepository implements SupplierTransactionRepositoryInte
     public function getSupplierTransactionData($request)
     {
       
-        $start = $request['fromDate'];
-        $end = $request['toDate'];
-        $supplier_id = $request['supplier_id'];
-        $raw_id = $request['raw_id'];
-        dd($request);
-        return SupplierTransaction::whereNull('deleted_at')->get()
-        ->whereBetween('date', [$start,$end]);
-        
+       // $start = strtotime(trim($request['fromDate'], '"'));
+       // $end = strtotime(trim($request['toDate'], '"'));
+       $start       = date('Y-m-d',strtotime(trim($request['fromDate'], '"')));
+       $end         = date('Y-m-d',strtotime(trim($request['toDate'], '"')));
+      $supplierId   = $request['supplierId'];
+      $rawId        = $request['rawId'];
+
+      // $time = strtotime(trim($request['fromDate'], '"'));
+      // //dd($time);
+      // $newformat = date('Y-m-d',$time);
+  // dd($start);
+  // dd($end);
+ // return SupplierTransaction::all();
+      $sql = SupplierTransaction::join('raws', 'raws.id', '=', 'supplier_transactions.supplierId')
+              ->join('suppliers', 'suppliers.id', '=', 'supplier_transactions.rawId')
+              ->whereNull('deleted_at');
+                              
+                                 //->whereBetween("DATE_FORMAT(date,'%Y-%m-%d')", [$start,$end]);
+                                // ->get();
+      if (!empty($supplierId)) {
+          $sql->where('supplierId', $supplierId);
+      }
+      if (!empty($rawId)) {
+        $sql->where('rawId', $rawId);
+      }
+
+      $result= $sql->get();
+
+    return $result;
+                                
     }
 }

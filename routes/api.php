@@ -6,7 +6,6 @@ use App\Http\Controllers\API\Raw\RawMaterialController;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\Supplier\SupplierController;
-use Illuminate\Http\Response;
 use App\Http\Controllers\API\Product\ProductListController;
 use App\Http\Controllers\API\Township\TownshipController;
 use App\Http\Controllers\API\Customer\CustomerController;
@@ -72,7 +71,7 @@ Route::prefix('township')->group(function () {
 });
 
 Route::prefix('supplier-transaction-list')->group(function () {
-    Route::get('search-supplier-transaction',[SupplierTransactionListController::class, 'search']);
+    Route::post('search-supplier-transaction',[SupplierTransactionListController::class, 'search']);
    
 });
 

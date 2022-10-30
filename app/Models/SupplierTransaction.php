@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SupplierTransaction extends Model
 {
-    protected $table = 'supplier_transaction';
+    protected $table = 'supplier_transactions';
     use HasFactory;
 }
