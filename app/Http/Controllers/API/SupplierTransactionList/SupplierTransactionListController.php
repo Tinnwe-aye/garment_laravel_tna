@@ -19,11 +19,29 @@ class SupplierTransactionListController extends Controller
         try{
           
             $data = $this->supplierTransactionRepo->getSupplierTransactionData($request);
-            dd($data);
+           
+            $response = $data->map(function($data,$key) {  //dd($data->id);
+                return [
+                    "key"=>$key+1,
+                    "id"=>$data->id,
+                    "date"=>$data->date,
+                    "supplierNameEN"=>$data->supplierNameEN,
+                    "rawName"=>$data->rawName,
+                    "qtyBack"=>$data->qty_back,
+                    "qty"=>$data->qty,
+                    "price"=>$data->price,
+                    "totalAmount"=>$data->total_amount,
+                    "AlltotalAmount"=>$data->total_amount+=$data->total_amount,
+                    "AlltotalQty"=>$data->qty+=$data->qty,
+                ];
+            }); 
+            //dd($response);
+            $response=json_decode($response,true);
+          
             return response()->json([
                 'status' =>  'OK',
-                'row_count'=>count($data),
-                'data'   =>   $data,
+                'row_count'=>count($response),
+                'data'   =>   $response,
             ],200);
         }catch(\Throwable $th) {
             return response()->json([

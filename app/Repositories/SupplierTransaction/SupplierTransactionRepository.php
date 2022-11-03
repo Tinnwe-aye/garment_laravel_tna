@@ -30,33 +30,47 @@ class SupplierTransactionRepository implements SupplierTransactionRepositoryInte
       
        // $start = strtotime(trim($request['fromDate'], '"'));
        // $end = strtotime(trim($request['toDate'], '"'));
-       $start       = date('Y-m-d',strtotime(trim($request['fromDate'], '"')));
-       $end         = date('Y-m-d',strtotime(trim($request['toDate'], '"')));
-      $supplierId   = $request['supplierId'];
-      $rawId        = $request['rawId'];
+      $start        = $request['fromDate'];
+      $end          = $request['toDate'];
+      $supplier_id   = $request['supplier_id'];
+      $raw_id        = $request['raw_id'];
+    
 
-      // $time = strtotime(trim($request['fromDate'], '"'));
-      // //dd($time);
-      // $newformat = date('Y-m-d',$time);
-  // dd($start);
-  // dd($end);
- // return SupplierTransaction::all();
-      $sql = SupplierTransaction::join('raws', 'raws.id', '=', 'supplier_transactions.supplierId')
-              ->join('suppliers', 'suppliers.id', '=', 'supplier_transactions.rawId')
-              ->whereNull('deleted_at');
-                              
-                                 //->whereBetween("DATE_FORMAT(date,'%Y-%m-%d')", [$start,$end]);
-                                // ->get();
-      if (!empty($supplierId)) {
-          $sql->where('supplierId', $supplierId);
+    //   $sql = DB::table('supplier_transactions')
+    //   ->whereNull('deleted_at');    
+       
+     
+    //   if (!empty($supplier_id)) {
+    //       $sql->where('supplier_id', $supplier_id);
+    //   }
+    //   if (!empty($raw_id)) {
+    //     $sql->where('raw_id', $raw_id);
+    //   }
+
+    //   $result= $sql->get();
+     
+    // return $result;
+
+
+    $sql = DB::table('supplier_transactions')
+                    ->leftjoin('raws','supplier_transactions.raw_id','raws.id')
+                    ->leftjoin('suppliers','supplier_transactions.supplier_id','suppliers.id')
+                    ->select(
+                              'supplier_transactions.*','raws.name AS rawName',
+                              'suppliers.name_en AS supplierNameEN',
+                              'suppliers.name_mm AS supplierNameMM'
+                              )
+                    ->whereNull('supplier_transactions.deleted_at');
+                   // ->get();
+
+    if (!empty($supplier_id)) {
+        $sql->where('supplier_transactions.supplier_id', $supplier_id);
       }
-      if (!empty($rawId)) {
-        $sql->where('rawId', $rawId);
-      }
+    if (!empty($raw_id)) {
+      $sql->where('supplier_transactions.raw_id', $raw_id);
+    }
 
-      $result= $sql->get();
-
-    return $result;
-                                
+    return $sql->get();
+                //   dd($result);
     }
 }
