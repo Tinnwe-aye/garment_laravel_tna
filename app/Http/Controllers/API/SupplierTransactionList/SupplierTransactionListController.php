@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\API\SupplierTransactionList;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SupplierTransaction;
+use App\Http\Controllers\Controller;
+use App\DBTransactions\SupplierTransaction\RemoveSupplierTransaction;
 use App\Interfaces\SupplierTransaction\SupplierTransactionRepositoryInterface;
-
 
 class SupplierTransactionListController extends Controller
 {
@@ -19,13 +20,78 @@ class SupplierTransactionListController extends Controller
         try{
           
             $data = $this->supplierTransactionRepo->getSupplierTransactionData($request);
-            dd($data);
+           
+            $response = $data->map(function($data,$key) {  //dd($data->id);
+                return [
+                    "key"=>$key+1,
+                    "id"=>$data->id,
+                    "date"=>$data->date,
+                    "supplierNameEN"=>$data->supplierNameEN,
+                    "rawName"=>$data->rawName,
+                    "qtyBack"=>$data->qty_back,
+                    "qty"=>$data->qty,
+                    "price"=>$data->price,
+                    "totalAmount"=>$data->total_amount,
+                    "AlltotalAmount"=>$data->total_amount+=$data->total_amount,
+                    "AlltotalQty"=>$data->qty+=$data->qty,
+                ];
+            }); 
+            //dd($response);
+            $response=json_decode($response,true);
+          
             return response()->json([
                 'status' =>  'OK',
-                'row_count'=>count($data),
-                'data'   =>   $data,
+                'row_count'=>count($response),
+                'data'   =>   $response,
             ],200);
         }catch(\Throwable $th) {
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
+    }
+
+
+    public function destroy(Request $request)
+    {
+       
+        // try {
+        //     if (!SupplierTransaction::whereIn('id', $request->id)->exists()) {
+        //         return response()->json([
+        //             'status' =>  'NG',
+        //             'message'   =>  trans('errorMessage.ER007'),
+        //         ], 200);
+        //     }
+        //     SupplierTransaction::whereIn('id', $request->id)->whereNull('deleted_at')->delete();
+        //     return response()->json([
+        //         'status' => 'OK',
+        //         'message'   =>  trans('successMessage.SS003'),
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'status' =>  'NG',
+        //         'message' =>  trans('errorMessage.ER005'),
+        //     ], 200);
+        // }
+        // //
+
+        try {
+            $remove = new RemoveSupplierTransaction($request);
+            $bool = $remove->process();
+            if ($bool['status']) {
+                return response()->json([
+                    'status'    =>  'OK',
+                    'message'   =>  trans('successMessage.SS003'),
+                ],200);
+            }else{
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER005'),
+                ],200);
+            }
+            
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' =>  'NG',
                 'message' =>  trans('errorMessage.ER005'),

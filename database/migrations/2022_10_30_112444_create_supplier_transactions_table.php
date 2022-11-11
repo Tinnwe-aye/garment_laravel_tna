@@ -16,12 +16,12 @@ class CreateSupplierTransactionsTable extends Migration
         Schema::create('supplier_transactions', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->integer('supplierId')->comment('foreign Key from suppliers');
-            $table->integer('rawId')->comment('foreign Key from raws');
-            $table->integer('qtyPack');
+            $table->integer('supplier_id')->comment('foreign Key from suppliers');
+            $table->integer('raw_id')->comment('foreign Key from raws');
+            $table->integer('qty_back');
             $table->integer('qty');
             $table->integer('price');
-            $table->integer('totalAmt');
+            $table->integer('total_amount');
             $table->softDeletes();
             $table->integer('created_emp');
             $table->integer('updated_emp');
