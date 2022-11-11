@@ -72,6 +72,7 @@ Route::prefix('township')->group(function () {
 
 Route::prefix('supplier-transaction-list')->group(function () {
     Route::post('search-supplier-transaction',[SupplierTransactionListController::class, 'search']);
+    Route::post('delete-supplier-transaction',[SupplierTransactionListController::class, 'destroy']);
    
 });
 
