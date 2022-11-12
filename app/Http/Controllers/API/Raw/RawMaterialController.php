@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API\Raw;
 
 use App\Models\Raws;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+
 
 class RawMaterialController extends Controller
 {
@@ -19,8 +19,7 @@ class RawMaterialController extends Controller
     public function index()
     {
         try {
-            $data       = Raws::whereNull('deleted_at')
-                ->get();
+            $data       = Raws::whereNull('deleted_at')->get();
             $rawsData   = $data->map(function ($data, $key) {
                 $data['key'] = $key + 1;
                 return $data;
