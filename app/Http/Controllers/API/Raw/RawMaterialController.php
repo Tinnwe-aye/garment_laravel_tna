@@ -54,6 +54,14 @@ class RawMaterialController extends Controller
                 'message'   =>  $validator->errors()->all(),
             ], 200);
         }
+        // $existRawName = DB::table('raws')->where('name',$request->name)->first();
+        // dd($existRawName);
+        if (DB::table('raws')->where('name',$request->name)->exists()) {
+            return response()->json([
+                'status'    =>  'NG',
+                'message'   => 'Raw Name Already Exist!',
+            ], 200);
+        }
         try {
             DB::beginTransaction();
 
