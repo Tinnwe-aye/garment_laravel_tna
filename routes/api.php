@@ -3,12 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Raw\RawMaterialController;
-use App\Http\Controllers\API\Tailor\TailorListController;
-use App\Http\Controllers\API\Tailor\TailorRegistrationController;
-use App\Http\Controllers\API\Supplier\SupplierController;
-use App\Http\Controllers\API\Product\ProductListController;
-use App\Http\Controllers\API\Township\TownshipController;
 use App\Http\Controllers\API\Customer\CustomerController;
+use App\Http\Controllers\API\Supplier\SupplierController;
+use App\Http\Controllers\API\Tailor\TailorListController;
+use App\Http\Controllers\API\Township\TownshipController;
+use App\Http\Controllers\API\Product\ProductListController;
+use App\Http\Controllers\API\Tailor\TailorRegistrationController;
+use App\Http\Controllers\API\CustomerTransaction\CustomerTransactionController;
 use App\Http\Controllers\API\SupplierTransactionList\SupplierTransactionListController;
 
 /*
@@ -75,5 +76,24 @@ Route::prefix('supplier-transaction-list')->group(function () {
     Route::post('delete-supplier-transaction',[SupplierTransactionListController::class, 'destroy']);
    
 });
+
+Route::prefix('product')->group(function () {
+    Route::get('get-product-names',[ProductListController::class, 'getProductNames']);
+    Route::post('get-product-sizes-by-name',[ProductListController::class, 'getProductSizeByName']);   
+});
+
+Route::prefix('customer-transaction-register')->group(function () {
+    Route::post('save',[CustomerTransactionController::class, 'store']);
+   //  Route::post('update',[CustomerTransactionController::class, 'update']);
+   
+});
+
+// Route::prefix('customer-transaction-list')->group(function () {
+//     Route::post('delete',[CustomerTransactionListController::class, 'destroy']);
+//     Route::post('search',[CustomerTransactionListController::class, 'search']);
+//     Route::post('edit',[CustomerTransactionListController::class, 'edit']);
+   
+// });
+
 
 

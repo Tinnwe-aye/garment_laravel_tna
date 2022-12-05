@@ -15,14 +15,14 @@ class CreateCustomerTransactionsTable extends Migration
     {
         Schema::create('customer_transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('customer_id');
+            $table->string('customer_id',50);
             $table->date('tran_date');
             $table->integer('total_qty');
             $table->integer('total_amt');
             $table->string('voucher_no');
             $table->softDeletes();
-            $table->integer('created_emp');
-            $table->integer('updated_emp');
+            $table->integer('created_emp')->default(1);
+            $table->integer('updated_emp')->default(1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

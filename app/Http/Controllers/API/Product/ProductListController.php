@@ -157,4 +157,57 @@ class ProductListController extends Controller
             ],200);
         }
     }
+
+    public function getProductNames()
+    {
+        try{
+            $datas = $this->productRepo->getProductName();
+            if(count($datas) > 0)
+            {
+                return response()->json([
+                    'status' =>  'OK',
+                    'row_count'=>count($datas),
+                    'data'   =>   $datas,
+                ],200);
+            } else {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER009'),
+                ],200);
+            }
+            
+        } catch (\Throwable $th) {
+            log::debug($th);
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
+    }
+
+    public function getProductSizeByName(Request $request){
+        try{
+            $datas = $this->productRepo->getProductSizeByName($request);
+            if(count($datas) > 0)
+            {
+                return response()->json([
+                    'status' =>  'OK',
+                    'row_count'=>count($datas),
+                    'data'   =>   $datas,
+                ],200);
+            } else {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER009'),
+                ],200);
+            }
+            
+        } catch (\Throwable $th) {
+            log::debug($th);
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
+    }
 }

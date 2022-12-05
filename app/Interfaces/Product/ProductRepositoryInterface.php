@@ -17,5 +17,9 @@ interface ProductRepositoryInterface
      * @create_date 2021-08-25
      */
     public function searchData($request);
+    
+    public function getProductName();
+
+    public function getProductSizeByName($data);
 
 }

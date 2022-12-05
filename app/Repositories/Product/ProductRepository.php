@@ -3,13 +3,14 @@
 namespace App\Repositories\Product;
 
 use App\Models\Tailor;
-use Illuminate\Support\Facades\DB;
+use App\Models\Products;
+use App\Models\ProductSizes;
 use App\Interfaces\Product\ProductRepositoryInterface;
 
 /**
  * Product repository
  *
- * @author  PhyoNaing Htun
+ * @author  Tin Nwe Aye
  * @create  2022/07/19
  */
 class ProductRepository implements ProductRepositoryInterface
@@ -42,4 +43,21 @@ class ProductRepository implements ProductRepositoryInterface
         //dd(DB::getQueryLog());
         return  $ProductData;
     }
+
+    public function getProductName()
+    {
+        return Products::all();
+    }
+
+    public function getProductSizeByName($request)
+    {
+        $data = $request->all();
+        $sizes = ProductSizes::join('sizes','sizes.id','products_size.size_id')
+                                ->where('product_id',$data['product_id'])
+                                ->whereNull('sizes.deleted_at')
+                                ->select('sizes.id','size')
+                                ->get();
+        return $sizes;
+    }
+
 }

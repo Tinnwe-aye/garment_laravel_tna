@@ -22,8 +22,8 @@ class CreateCustomerTransactionDataTable extends Migration
             $table->integer('qty');
             $table->integer('amount');
             $table->softDeletes();
-            $table->integer('created_emp');
-            $table->integer('updated_emp');
+            $table->integer('created_emp')->default(1);
+            $table->integer('updated_emp')->default(1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
