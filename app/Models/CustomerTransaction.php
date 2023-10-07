@@ -13,4 +13,8 @@ class CustomerTransaction extends Model
     protected $hidden = [
         'created_emp', 'updated_emp', 'created_at' ,'updated_at'
     ];
+
+    public function CusTranData(){
+        return $this->hasMany('App\Models\CustomerTransactionData');
+    }
 }

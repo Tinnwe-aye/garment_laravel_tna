@@ -10,6 +10,7 @@ use App\DBTransactions\Supplier\SaveSupplier;
 use App\DBTransactions\Supplier\EditSupplier;
 use App\DBTransactions\Supplier\RemoveSupplier;
 use App\Interfaces\Supplier\SupplierRepositoryInterface;
+use Illuminate\Support\Facades\log;
 
 class SupplierController extends Controller
 {
@@ -24,10 +25,12 @@ class SupplierController extends Controller
         $rules = [
             'name_mm' => 'required',
             'name_en' => 'required',
-            'phone_no' => 'required',
+            'phone_no' => 'required | min:6',
+            'email' => 'unique:App\Models\Supplier,email',
             'address' => 'required'
         ];
         $validator = Validator::make($request->all(), $rules);
+        log::info($validator->errors()->all());
         if ($validator->fails()) {
             return response()->json([
                 'status'    =>  'NG',

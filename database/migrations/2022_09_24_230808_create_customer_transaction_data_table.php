@@ -17,7 +17,9 @@ class CreateCustomerTransactionDataTable extends Migration
             $table->id();
             $table->integer('customer_transaction_id');
             $table->integer('product_id');
+            $table->string('product_name',255);
             $table->integer('size_id');
+            $table->string('size_name',45);
             $table->integer('price');
             $table->integer('qty');
             $table->integer('amount');

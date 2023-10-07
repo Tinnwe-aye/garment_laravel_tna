@@ -88,12 +88,12 @@ Route::prefix('customer-transaction-register')->group(function () {
    
 });
 
-// Route::prefix('customer-transaction-list')->group(function () {
-//     Route::post('delete',[CustomerTransactionListController::class, 'destroy']);
-//     Route::post('search',[CustomerTransactionListController::class, 'search']);
-//     Route::post('edit',[CustomerTransactionListController::class, 'edit']);
+Route::prefix('customer-transaction-list')->group(function () {
+    Route::post('delete',[CustomerTransactionController::class, 'destroy']);
+    Route::post('search',[CustomerTransactionController::class, 'show']);
+    Route::get('edit/{id}',[CustomerTransactionController::class, 'edit']);
    
-// });
+});
 
 
 

@@ -8,9 +8,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use App\Models\CustomerTransaction;
 use App\Models\CustomerTransactionData;
+use App\Interfaces\CustomerTransaction\CustomerTransactionRepositoryInterface;
 
 class CustomerTransactionController extends Controller
 {
+    protected $csTranrRepo;
+    public function __construct(CustomerTransactionRepositoryInterface $csTranrRepo)
+    {
+        $this->csTranrRepo = $csTranrRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -56,13 +62,16 @@ class CustomerTransactionController extends Controller
             $cusTranData = array(
                 'customer_transaction_id'=>$cusTranMaxid,
                 'product_id'=>$productData['productName'],
+                'product_name'=>$productData['pName'],
                 'size_id'=>$productData['productSize'],
+                'size'=>$productData['pSize'],
                 'price'=>$productData['productPrice'],
                 'qty'=>$productData['productQty'],
                 'amount'=>$productData['total']
             );
             array_push( $CusTranArr,$cusTranData);            
         }
+
         $insertCusTranData = CustomerTransactionData::insert($CusTranArr);/// need db trasaction to roll back data
         if ($insertCusTran && $insertCusTranData) {
             return response()->json([
@@ -84,9 +93,20 @@ class CustomerTransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $cuTranData  = $this->csTranrRepo->searchCusTran($request->all());
+        if(!empty($cuTranData)){
+            return response()->json([
+                'status'    =>  'OK',
+                'data'      => $cuTranData,
+            ],200);
+        }else{
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER009'),
+            ],200);
+        }
     }
 
     /**
@@ -97,7 +117,18 @@ class CustomerTransactionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cuTranData  = $this->csTranrRepo->editCusTran($id);
+        if(!empty($cuTranData)){
+            return response()->json([
+                'status'    =>  'OK',
+                'data'      => $cuTranData,
+            ],200);
+        }else{
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER009'),
+            ],200);
+        }
     }
 
     /**
