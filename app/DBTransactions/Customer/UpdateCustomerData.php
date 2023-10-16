@@ -6,25 +6,25 @@ use App\Classes\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class SaveCustomer extends Transaction  {
+
+class UpdateCustomerData extends Transaction  {
     //use LogTrait;
-    private $request;
+    private $request,$id;
     //private $attendanceArray;
-    public function __construct($request)
+    public function __construct($id,$request)
     {
         $this->request = $request;
+        $this->id = $id;
     }
       /**
 	 * Write detail of method
      *
-     * @author Hein Htet Ko
-     * @create  2022/08/15
-     * @return  array
+     * @author Tin Nwe Aye
+     * @create  2023/10/190     * @return  array
 	 */
     public function process()
-    {    
-        $row = Customer::insert([
-            'customer_id' => $this->request->customer_id,
+    {
+        $data= Customer::where('id',$this->id)->update([
             'name_mm' => $this->request->name_mm,
             'name_en' => $this->request->name_en,
             'email' => $this->request->mail,
@@ -38,6 +38,7 @@ class SaveCustomer extends Transaction  {
             'created_emp' => $this->request->login_id,
             'updated_emp' => $this->request->login_id,
         ]); 
+
         return ['status' => true, 'error' => ''];
     }
 }

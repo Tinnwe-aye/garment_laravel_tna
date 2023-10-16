@@ -60,7 +60,7 @@ Route::prefix('customer')->group(function () {
     Route::post('storeCustomer',[CustomerController::class, 'store']);
     Route::get('getCustomerList',[CustomerController::class, 'show']);
     Route::get('editCustomer/{id}',[CustomerController::class, 'edit']);
-    Route::post('updateCustomer',[CustomerController::class, 'update']);
+    Route::put('updateCustomer/{id}',[CustomerController::class, 'update']);
     Route::post('deleteCustomer',[CustomerController::class, 'destroy']);
     Route::get('getCustomerId',[CustomerController::class, 'getCustomerId']);
     // Route::get('getAllCustomerId',[CustomerController::class, 'getAllCustomerId']);
@@ -84,7 +84,7 @@ Route::prefix('product')->group(function () {
 
 Route::prefix('customer-transaction-register')->group(function () {
     Route::post('save',[CustomerTransactionController::class, 'store']);
-   //  Route::post('update',[CustomerTransactionController::class, 'update']);
+    Route::put('update/{id}',[CustomerTransactionController::class, 'update']);
    
 });
 
@@ -92,7 +92,7 @@ Route::prefix('customer-transaction-list')->group(function () {
     Route::post('delete',[CustomerTransactionController::class, 'destroy']);
     Route::post('search',[CustomerTransactionController::class, 'show']);
     Route::get('edit/{id}',[CustomerTransactionController::class, 'edit']);
-   
+    Route::post('destroy',[CustomerTransactionController::class, 'destroy']);
 });
 
 

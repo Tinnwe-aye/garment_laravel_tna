@@ -5,6 +5,7 @@ use App\Models\Tailor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\log;
 use App\DBTransactions\Tailor\SaveTailorData;
 use App\DBTransactions\Tailor\UpdateTailorData;
 
@@ -96,7 +97,7 @@ class TailorRegistrationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {log::info($request->all());
         //
         $rules = [
             'login_id'          => 'required',

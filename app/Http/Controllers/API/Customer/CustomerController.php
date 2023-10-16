@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\DBTransactions\Customer\SaveCustomer;
+use App\DBTransactions\Customer\UpdateCustomerData;
 use App\Interfaces\Customer\CustomerRepositoryInterface;
 
 class CustomerController extends Controller
 {
-    protected $tailorRepo,$productRepo;
+    protected $customerRepo;
     public function __construct(CustomerRepositoryInterface $customerRepo )
     {
         $this->customerRepo = $customerRepo;
@@ -50,8 +51,9 @@ class CustomerController extends Controller
             'customer_id' => 'required',
             'name_mm' => 'required',
             'name_en' => 'required',
-            'phone_no' => 'required | unique:customers',
+            'phone_no' => 'required | min:6 |unique:customers,phone_no',
             'addresses' => 'required',
+            'email' => 'email|unique:customers,email',
             'nrc_no' => 'required | unique:customers',
             'township_name' => 'required',
             'statuses' => 'required',
@@ -149,7 +151,51 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'customer_id' => 'required',
+            'name_mm' => 'required',
+            'name_en' => 'required',
+            'phone_no' => 'required | min:6 ',
+            'addresses' => 'required',
+            'email' => 'email',
+            'nrc_no' => 'required ',
+            'township_name' => 'required',
+            'statuses' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status'    =>  'NG',
+                'message'   =>  $validator->errors()->all(),
+            ],200);
+        }
+        try {
+            if (!Customer::where('id',$id)->exists()) {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message'   =>  trans('errorMessage.ER007'),
+                ],200);
+            }
+            //create UpdateCustomerData Class to update data in db
+            $update = new UpdateCustomerData($id,$request);
+            $bool = $update->executeProcess();
+            if ($bool) {
+                return response()->json([
+                    'status'    =>  'OK',
+                    'message'   =>  trans('successMessage.SS002'),
+                ],200);
+            }else{
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER005'),
+                ],200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
     }
 
     /**
