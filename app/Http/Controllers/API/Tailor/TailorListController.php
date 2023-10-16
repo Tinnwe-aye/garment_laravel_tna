@@ -14,7 +14,27 @@ class TailorListController extends Controller
     {
         $this->tailorRepo = $tailorRepo;
     }
-  /**
+  
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        try {
+            $data      = Tailor::select('id','tailor_id','name_mm','name_en')->orderby('name_en')->get();
+            return response()->json([
+                'status' =>  'OK',
+                'row_count' => count($data),
+                'data'   =>   $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    /**
      * Display a listing of the tailor resource.
      * htet Ko Hmue
      * @return \Illuminate\Http\Response

@@ -11,6 +11,7 @@ use App\Http\Controllers\API\Product\ProductListController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\CustomerTransaction\CustomerTransactionController;
 use App\Http\Controllers\API\SupplierTransactionList\SupplierTransactionListController;
+use App\Http\Controllers\API\Size\SizesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ use App\Http\Controllers\API\SupplierTransactionList\SupplierTransactionListCont
 //     return $request->user();
 // });
 Route::prefix('tailor-list')->group(function () {
+    Route::get('getTailorAll',[TailorListController::class, 'index']);
     Route::get('search-tailor',[TailorListController::class, 'search']);
     Route::post('delete-tailor',[TailorListController::class, 'destroy']);
 });
@@ -93,6 +95,10 @@ Route::prefix('customer-transaction-list')->group(function () {
     Route::post('search',[CustomerTransactionController::class, 'show']);
     Route::get('edit/{id}',[CustomerTransactionController::class, 'edit']);
     Route::post('destroy',[CustomerTransactionController::class, 'destroy']);
+});
+
+Route::prefix('sizes')->group(function () {
+    Route::get('getsizes',[SizesController::class, 'index']);
 });
 
 
