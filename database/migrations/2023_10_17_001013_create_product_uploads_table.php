@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductsTable extends Migration
+class CreateProductUploadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('product_uploads', function (Blueprint $table) {
             $table->id();
-            $table->string('product_code',50);
-            $table->string('product_name',50);
+            $table->date('date');
+            $table->integer('product_id')->comment('foreign Key from products');
+            $table->string('image_name',50);
+            $table->string('image_link',255);
             $table->softDeletes();
+            $table->integer('created_emp');
+            $table->integer('updated_emp');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
@@ -30,6 +34,6 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('product_uploads');
     }
 }

@@ -31,7 +31,6 @@ class SaveTailorData extends Transaction  {
             "name_mm"           => $this->request->name_mm,
             "name_en"           => $this->request->name_en,
             "phone_no"          => $this->request->phone_no,
-            "email"             => $this->request->mail,
             "nrc_no"            => $this->request->nrc_no,
             "address"           => $this->request->address,
             "description"       => $this->request->description,

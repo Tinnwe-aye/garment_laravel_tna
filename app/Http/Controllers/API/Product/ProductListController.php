@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\Product;
 
-use App\Models\Tailor;
+use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +26,16 @@ class ProductListController extends Controller
      */
     public function index()
     {
-      //
+        try {
+            $data       = Products::select('id','product_name')->orderby('product_name')->get();
+            return response()->json([
+                'status' =>  'OK',
+                'row_count' => count($data),
+                'data'   =>   $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
@@ -109,7 +118,7 @@ class ProductListController extends Controller
     }
     
     public function search(Request $request)
-    {
+    {log::info($request);
         try{
             $datas = $this->productRepo->searchData($request);
             $i = 0 ;

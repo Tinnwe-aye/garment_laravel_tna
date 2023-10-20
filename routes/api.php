@@ -8,6 +8,7 @@ use App\Http\Controllers\API\Supplier\SupplierController;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Township\TownshipController;
 use App\Http\Controllers\API\Product\ProductListController;
+use App\Http\Controllers\API\Product\ProductInController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\CustomerTransaction\CustomerTransactionController;
 use App\Http\Controllers\API\SupplierTransactionList\SupplierTransactionListController;
@@ -37,7 +38,15 @@ Route::prefix('tailor-register')->group(function () {
     Route::get('edit-tailor/{id}',[TailorRegistrationController::class, 'show']);
     Route::put('update-tailor/{id}',[TailorRegistrationController::class, 'update']);
 });
+
+Route::prefix('product-in')->group(function () {
+    Route::post('store',[ProductInController::class, 'store']);
+    Route::get('edit/{id}',[ProductInController::class, 'edit']);
+    Route::put('update/{id}',[ProductInController::class, 'update']);
+    Route::post('destory',[ProductInController::class, 'destory']);
+});
 Route::prefix('product-in-list')->group(function () {
+    Route::get('getProductAll',[ProductListController::class, 'index']);
     Route::get('searchTailor',[ProductListController::class, 'searchTailor']);
     Route::get('searchTailorByID',[ProductListController::class, 'searchTailorByID']);
     Route::post('search-product',[ProductListController::class, 'search']);
