@@ -36,7 +36,7 @@ class CustomerTransactionRepository implements CustomerTransactionRepositoryInte
                  ->join('customers','customers.customer_id','customer_transactions.customer_id')
                  ->whereBetween('tran_date',[$request['from_date'],$request['to_date']])
                  ->where($condition)
-                 ->select('customer_transactions.*','customers.name_mm','customers.name_mm','customer_transactions.total_qty as totalQty','customer_transactions.total_amt as totalAmt')
+                 ->select('customer_transactions.*','customers.name_mm','customers.name_en','customer_transactions.total_qty as totalQty','customer_transactions.total_amt as totalAmt')
                  ->get();
 
                  $results = $result->toArray();

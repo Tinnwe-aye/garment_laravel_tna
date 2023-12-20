@@ -22,4 +22,5 @@ interface ProductRepositoryInterface
 
     public function getProductSizeByName($data);
 
+    public function editProductInTran($request);
 }

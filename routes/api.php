@@ -43,7 +43,7 @@ Route::prefix('product-in')->group(function () {
     Route::post('store',[ProductInController::class, 'store']);
     Route::get('edit/{id}',[ProductInController::class, 'edit']);
     Route::put('update/{id}',[ProductInController::class, 'update']);
-    Route::post('destory',[ProductInController::class, 'destory']);
+    Route::post('destroy',[ProductInController::class, 'destroy']);
 });
 Route::prefix('product-in-list')->group(function () {
     Route::get('getProductAll',[ProductListController::class, 'index']);

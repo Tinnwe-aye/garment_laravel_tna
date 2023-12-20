@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\ProductIn;
 use App\Models\ProductUpload;
+use App\Models\ProductInData;
+use App\Interfaces\Product\ProductRepositoryInterface;
 
 class ProductInController extends Controller
 {
+    protected $tailorRepo,$productRepo;
+    public function __construct(ProductRepositoryInterface $productRepo
+                                )
+    {
+        $this->productRepo = $productRepo;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -39,20 +48,30 @@ class ProductInController extends Controller
     public function store(Request $request)
     {
         $request = $request->all();
+        $productInTran = array(
+            'tailor_id'=> $request['tailor_id'],
+            'Date' => $request['inDate'],
+            'total_qty' => $request['total_qty'],
+            'total_amt' => $request['total_amt'],
+            'voucher_no' => ''
+        );
+        $insertPin = ProductIn::insert($productInTran);
+        $pInMaxid = ProductIn::max('id');
         $productInArr = [];
         foreach($request['product_data'] as $productData){
             $productInData = array(
-                'date'=> $request['inDate'],
-                'tailor_id'=> $request['tailor_id'],
+                'product_in_id'=>$pInMaxid,
                 'product_id'=>$productData['name'],
+                'product_name'=>$productData['pName'],
                 'size_id'=>$productData['size'],
+                'size_name'=>$productData['pSize'],
                 'qty'=>$productData['qty'],
                 'price'=>$productData['rate'],
-                'total_amount'=>$productData['price'],
+                'amount'=>$productData['price'],
             );
             array_push( $productInArr,$productInData);            
         }
-        $insertproductInData = ProductIn::insert($productInArr);
+        $insertproductInData = ProductInData::insert($productInArr);
         if (!$insertproductInData) {
             return response()->json([
                 'status' =>  'NG',
@@ -85,7 +104,7 @@ class ProductInController extends Controller
             ],200);
         }
 
-        if ($insertproductInData && $insertproductInImgData) {
+        if ($insertproductInData && $insertproductInImgData && $insertPin) {
             return response()->json([
                 'status'    =>  'OK',
                 'message'   =>  trans('successMessage.SS001'),
@@ -113,7 +132,18 @@ class ProductInController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cuTranData  = $this->productRepo->editProductInTran($id);
+        if(!empty($cuTranData)){
+            return response()->json([
+                'status'    =>  'OK',
+                'data'      => $cuTranData,
+            ],200);
+        }else{
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER009'),
+            ],200);
+        }
     }
 
     /**
@@ -125,7 +155,69 @@ class ProductInController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $request = $request->all();
+            $productInTran = array(
+                // 'customer_id'=> $request['customer_id'],
+                'date' => $request['inDate'],
+                'total_qty' => $request['total_qty'],
+                'total_amt' => $request['total_amt'],
+                'voucher_no' => ''
+            );        
+            if (!ProductIn::where('id',$id)->exists()) {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message'   =>  trans('errorMessage.ER007'),
+                ],200);
+            }
+            //create UpdateCustomerTrasaction Class to update data in db
+            $updatePinTran = ProductIn::where('id',$id)->update($productInTran);
+            if(!$updatePinTran){
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER005'),
+                ],200);
+            }
+            
+
+            #Delete first from customer_transaction_data
+            ProductInData::where('product_in_id',$id)->delete();
+            
+            #Add new customer_transaction_data
+            $pInTranArr = [];
+            foreach($request['product_data'] as $productData){
+                $pInTranData = array(
+                    'product_in_id'=>$id,
+                    'product_id'=>$productData['name'],
+                    'product_name'=>$productData['pName'],
+                    'size_id'=>$productData['size'],
+                    'size_name'=>$productData['pSize'],
+                    'price'=>$productData['rate'],
+                    'qty'=>$productData['qty'],
+                    'amount'=>$productData['price']
+                );
+                array_push( $pInTranArr,$pInTranData);            
+            }
+
+            $insertPinTranData = ProductInData::insert($pInTranArr);/// need db trasaction to roll back data
+            if ($updatePinTran && $insertPinTranData) {
+                return response()->json([
+                    'status'    =>  'OK',
+                    'message'   =>  trans('successMessage.SS002'),
+                ],200);
+            }else{
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER005'),
+                ],200);
+            }                           
+        } catch (\Throwable $th) {
+            log::info($th);
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
     }
 
     /**
@@ -134,8 +226,36 @@ class ProductInController extends Controller
      * @param  \App\Models\ProductCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            if (!ProductIn::where('id',$request->id)->exists()) {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message'   =>  trans('errorMessage.ER007'),
+                ],200);
+            }
+            if (!ProductInData::where('product_in_id',$request->id)->exists()) {
+                return response()->json([
+                    'status' =>  'NG',
+                    'message'   =>  trans('errorMessage.ER007'),
+                ],200);
+            }
+
+            ProductIn::where('id',$request->id)->delete();
+            ProductInData::where('product_in_id',$request->id)->delete();
+
+            return response()->json([
+                'status' => 'OK',
+                'message'   =>  trans('successMessage.SS003'),
+            ],200);
+
+        } catch (\Throwable $th) {
+            log::debug($th);
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
     }
 }
