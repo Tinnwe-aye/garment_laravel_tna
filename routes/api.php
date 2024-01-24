@@ -8,11 +8,14 @@ use App\Http\Controllers\API\Supplier\SupplierController;
 use App\Http\Controllers\API\Tailor\TailorListController;
 use App\Http\Controllers\API\Township\TownshipController;
 use App\Http\Controllers\API\Product\ProductListController;
+use App\Http\Controllers\API\Product\ProductCategoryController;
 use App\Http\Controllers\API\Product\ProductInController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\CustomerTransaction\CustomerTransactionController;
 use App\Http\Controllers\API\SupplierTransactionList\SupplierTransactionListController;
 use App\Http\Controllers\API\Size\SizesController;
+use App\Http\Controllers\API\TailorRaw\TailorRawController;
+use App\Http\Controllers\API\Category\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,9 +91,14 @@ Route::prefix('supplier-transaction-list')->group(function () {
    
 });
 
-Route::prefix('product')->group(function () {
+Route::prefix('product-list')->group(function () {
     Route::get('get-product-names',[ProductListController::class, 'getProductNames']);
     Route::post('get-product-sizes-by-name',[ProductListController::class, 'getProductSizeByName']);   
+});
+
+Route::prefix('product')->group(function () {
+    Route::post('create',[ProductCategoryController::class, 'create']);
+    Route::post('createProductSize',[ProductCategoryController::class, 'createProductSize']);
 });
 
 Route::prefix('customer-transaction-register')->group(function () {
@@ -109,6 +117,20 @@ Route::prefix('customer-transaction-list')->group(function () {
 Route::prefix('sizes')->group(function () {
     Route::get('getsizes',[SizesController::class, 'index']);
 });
+
+Route::prefix('categories')->group(function () {
+    Route::get('getCategory',[CategoryController::class, 'index']);
+});
+
+Route::prefix('tailor-raw')->group(function () {
+    Route::post('createTailorRawTransaction',[TailorRawController::class, 'create']);
+    Route::post('search',[TailorRawController::class, 'search']);
+    Route::post('store',[TailorRawController::class, 'store']);
+    Route::get('edit/{id}',[TailorRawController::class, 'edit']);
+    Route::put('update/{id}',[TailorRawController::class, 'update']);
+    Route::post('destroy',[TailorRawController::class, 'destroy']);
+});
+
 
 
 

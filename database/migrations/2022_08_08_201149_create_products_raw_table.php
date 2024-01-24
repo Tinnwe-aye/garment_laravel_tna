@@ -16,13 +16,17 @@ class CreateProductsRawTable extends Migration
         Schema::create('products_raw', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id')->comment('foreign Key from products');
-            $table->integer('raw_id')->comment('foreign Key from raws');
+            $table->integer('size_id')->comment('foreign Key from sizes');
+            $table->integer('raw1_id');
+            $table->integer('raw2_id')->nullable();
+            $table->string('raw_combination',11)->comment('single or pairs');
+            $table->integer('product_per_raws');
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

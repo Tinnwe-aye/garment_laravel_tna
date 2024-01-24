@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\ProductIn;
 use App\Models\ProductUpload;
 use App\Models\ProductInData;
+use App\Models\TailorTransaction;
 use App\Interfaces\Product\ProductRepositoryInterface;
 
 class ProductInController extends Controller
@@ -58,6 +59,7 @@ class ProductInController extends Controller
         $insertPin = ProductIn::insert($productInTran);
         $pInMaxid = ProductIn::max('id');
         $productInArr = [];
+        $tailorTransactionArr = [];
         foreach($request['product_data'] as $productData){
             $productInData = array(
                 'product_in_id'=>$pInMaxid,
@@ -69,9 +71,24 @@ class ProductInController extends Controller
                 'price'=>$productData['rate'],
                 'amount'=>$productData['price'],
             );
-            array_push( $productInArr,$productInData);            
+            array_push( $productInArr,$productInData);  
+            
+            $getLeftQty = TailorTransaction::where(['tailor_id'=>$request['tailor_id'],'product_id'=>$productData['name'],'size_id'=>$productData['size']])->orderBy('created_at', 'desc')->first();
+            $getLeftQty = ($getLeftQty) ? $getLeftQty->left_qty : 0 ;
+            $tailorTransaction = array(
+                "date"=> $request['inDate'],
+                "tailor_id"=> $request['tailor_id'],
+                "product_id"=> $productData['name'],
+                "size_id"=> $productData['size'],
+                "out_qty"=> 0,
+                "in_qty"=> $productData['qty'],
+                "left_qty"=> $getLeftQty - $productData['qty'], // need to Modified
+            );
+            array_push( $tailorTransactionArr,$tailorTransaction);  
         }
         $insertproductInData = ProductInData::insert($productInArr);
+        $insertTailorTransaction = TailorTransaction::insert($tailorTransactionArr);
+
         if (!$insertproductInData) {
             return response()->json([
                 'status' =>  'NG',

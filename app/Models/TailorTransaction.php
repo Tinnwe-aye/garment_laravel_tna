@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductCategory extends Model
+class TailorTransaction extends Model
 {
+    protected $table = 'tailor_transaction';
     use HasFactory;
-    protected $fillable = ['product_id','category_id'];
 }

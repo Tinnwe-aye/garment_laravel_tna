@@ -26,7 +26,7 @@ class CategorySeeder extends Seeder
                 "updated_at"    =>  Carbon::now()->format("Y-m-d H:i:s")
             ),
             array(
-                "name"      =>  "Children",
+                "name"      =>  "Baby Wear",
                 "type"          =>  "Baby",
                 "created_emp"   =>  "1001",
                 "updated_emp"   =>  "1001",

@@ -1,0 +1,33 @@
+set environment path from laragon php
+install composer
+for vs code => File->preference->setting->extension->php->edit in setting.json
+
+ Creating New Backend Api
+ routes-> api.php
+ -------------------------------
+ To Create all
+ php artisan make:model Todo -mcr
+ -m, --migration Create a new migration file for the model.
+-c, --controller Create a new controller for the model.
+-r, --resource Indicates if the generated controller should be a resource controller
+-----------------------------------
+ DB::enableQueryLog();
+ $insertProductsRaw = ProductRaw::updateOrCreate($productsRawCheck,$productsRaw);
+ log::info(DB::getQueryLog());
+ -------------------------------------
+ Get tailor raw data
+  $users = ProductRaw::with('productRaw1')
+        ->with('productRaw2')
+        ->with('productSize')
+        ->with('productProduct')
+        ->join('tailor_raws','tailor_raws.products_raw_id','=','products_raw.id')
+        ->join('tailor_transaction','tailor_transaction.date','=','tailor_raws.date')
+        ->whereBetween('tailor_raws.date', [$request->start_date, $request->end_date])
+        ->get();
+-------------------------------------
+  ->join('contacts', function ($join) {
+            $join->on('users.id', '=', 'contacts.user_id')
+                 ->join('orders', function ($join) {
+                    $join->on('users.id', '=', 'orders.user_id');
+                 });
+        })

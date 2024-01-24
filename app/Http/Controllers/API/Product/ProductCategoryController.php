@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\Product;
 
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\log;
+use App\Models\Products;
+use App\Models\ProductSizes;
 
 class ProductCategoryController extends Controller
 {
@@ -14,7 +18,7 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        //
+        // 
     }
 
     /**
@@ -22,9 +26,51 @@ class ProductCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(Request $request)
+    {   
+        $request = $request->all();
+        $products = array(
+            'product_code'=> '',
+            'product_name' => $request['product_name']
+        );
+        $insertProduct = Products::insert($products);
+        if ($insertProduct) {
+            return response()->json([
+                'status'    =>  'OK',
+                'message'   =>  trans('successMessage.SS001'),
+            ],200);
+        } else {
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createProductSize(Request $request)
+    {   
+        $request = $request->all();
+        $productSize = array(
+            'product_id'=> $request['product_id'],
+            'size_id' => $request['size_id']
+        );
+        $insertProductSize = ProductSizes::insert($productSize);
+        if ($insertProductSize) {
+            return response()->json([
+                'status'    =>  'OK',
+                'message'   =>  trans('successMessage.SS001'),
+            ],200);
+        } else {
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER005'),
+            ],200);
+        }
     }
 
     /**

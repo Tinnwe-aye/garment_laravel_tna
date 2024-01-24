@@ -33,4 +33,3 @@ class EditSupplier extends Transaction  {
         return ['status' => true, 'error' => false, 'data' => $row];
     }
 }
-?>

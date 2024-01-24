@@ -29,4 +29,3 @@ class RemoveSupplier extends Transaction  {
         
     }
 }
-?>
