@@ -63,7 +63,7 @@ class CustomerTransactionController extends Controller
                 'product_id'=>$productData['productName'],
                 'product_name'=>$productData['pName'],
                 'size_id'=>$productData['productSize'],
-                'size'=>$productData['pSize'],
+                'size_name'=>$productData['pSize'],
                 'price'=>$productData['productPrice'],
                 'qty'=>$productData['productQty'],
                 'amount'=>$productData['total']

@@ -18,13 +18,13 @@ class CreateSupplierTransactionsTable extends Migration
             $table->date('date');
             $table->integer('supplier_id')->comment('foreign Key from suppliers');
             $table->integer('raw_id')->comment('foreign Key from raws');
-            $table->integer('qty_back');
+            $table->integer('qty_pkg');
             $table->integer('qty');
             $table->integer('price');
             $table->integer('total_amount');
             $table->softDeletes();
-            $table->integer('created_emp');
-            $table->integer('updated_emp');
+            $table->integer('created_emp')->default(1);
+            $table->integer('updated_emp')->default(1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

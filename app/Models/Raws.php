@@ -13,4 +13,5 @@ class Raws extends Model
     protected $hidden = [
         'created_emp', 'updated_emp', 'created_at' ,'updated_at'
     ];
+
 }

@@ -11,8 +11,4 @@ class Products extends Model
     use SoftDeletes;
     use HasFactory;
     protected $hidden = [ 'created_at' ,'updated_at' ];
-
-    public function productRaw(){
-        return $this->hasMany('App\Models\ProductRaw');
-    }
 }

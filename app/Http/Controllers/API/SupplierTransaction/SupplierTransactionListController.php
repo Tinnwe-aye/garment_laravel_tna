@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API\SupplierTransactionList;
+namespace App\Http\Controllers\API\SupplierTransaction;
 
 use Illuminate\Http\Request;
 use App\Models\SupplierTransaction;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use App\DBTransactions\SupplierTransaction\RemoveSupplierTransaction;
 use App\Interfaces\SupplierTransaction\SupplierTransactionRepositoryInterface;
 
@@ -20,7 +21,7 @@ class SupplierTransactionListController extends Controller
         try{
           
             $data = $this->supplierTransactionRepo->getSupplierTransactionData($request);
-           
+         
             $response = $data->map(function($data,$key) {  //dd($data->id);
                 return [
                     "key"=>$key+1,
@@ -28,7 +29,7 @@ class SupplierTransactionListController extends Controller
                     "date"=>$data->date,
                     "supplierNameEN"=>$data->supplierNameEN,
                     "rawName"=>$data->rawName,
-                    "qtyBack"=>$data->qty_back,
+                    "qtyPack"=>$data->qty_pkg,
                     "qty"=>$data->qty,
                     "price"=>$data->price,
                     "totalAmount"=>$data->total_amount,

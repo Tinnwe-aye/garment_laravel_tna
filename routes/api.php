@@ -12,7 +12,8 @@ use App\Http\Controllers\API\Product\ProductCategoryController;
 use App\Http\Controllers\API\Product\ProductInController;
 use App\Http\Controllers\API\Tailor\TailorRegistrationController;
 use App\Http\Controllers\API\CustomerTransaction\CustomerTransactionController;
-use App\Http\Controllers\API\SupplierTransactionList\SupplierTransactionListController;
+use App\Http\Controllers\API\SupplierTransaction\SupplierTransactionController;
+use App\Http\Controllers\API\SupplierTransaction\SupplierTransactionListController;
 use App\Http\Controllers\API\Size\SizesController;
 use App\Http\Controllers\API\TailorRaw\TailorRawController;
 use App\Http\Controllers\API\Category\CategoryController;
@@ -85,6 +86,10 @@ Route::prefix('township')->group(function () {
     Route::post('storeTownship',[TownshipController::class, 'store']);
 });
 
+Route::prefix('supplier-transaction')->group(function () {
+    Route::post('store-supplier-transaction',[SupplierTransactionController::class, 'store']);
+   
+});
 Route::prefix('supplier-transaction-list')->group(function () {
     Route::post('search-supplier-transaction',[SupplierTransactionListController::class, 'search']);
     Route::post('delete-supplier-transaction',[SupplierTransactionListController::class, 'destroy']);

@@ -83,6 +83,13 @@ class ProductInController extends Controller
                 "out_qty"=> 0,
                 "in_qty"=> $productData['qty'],
                 "left_qty"=> $getLeftQty - $productData['qty'], // need to Modified
+                "products_raw_id"=> 0,
+                "raw_qty"=> 0,
+                "total_product_qty"=> 0,
+                "description"=> "",
+                "product_name" => $productData['pName'],
+                "size_name" => $productData['pSize'],
+                "raw_name" => "",
             );
             array_push( $tailorTransactionArr,$tailorTransaction);  
         }

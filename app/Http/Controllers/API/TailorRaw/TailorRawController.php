@@ -35,21 +35,26 @@ class TailorRawController extends Controller
     {
         // Sample input
         // array (
-        // 'tailor_id' => 1,
-        // 'date' => '2024-01-23',
-        // 'product_id' => 1,
-        // 'size_id' => 1,
-        // 'category_id' => 1,
-        // 'raw1_id' => 1,
-        // 'raw2_id' => 2,
-        // 'raw_qty' => '2',
-        // 'product_per_raws' => '22',
-        // 'total_product_qty' => 44,
-        // 'checkBox' => true,
-        // 'startDate' => '2024-01-23',
-        // 'endDate' => '2024-01-23',
-        // 'language' => 'en',
-        // )  
+        //     'tailor_id' => 1,
+        //     'date' => '2024-01-25',
+        //     'product_id' => 1,
+        //     'productName' => 'pname',
+        //     'size_id' => 1,
+        //     'sizeName' => 'SS',
+        //     'category_id' => 1,
+        //     'raw1_id' => 1,
+        //     'raw1' => 'Chipon',
+        //     'raw2_id' => 2,
+        //     'raw2' => 'Inlay',
+        //     'raw_qty' => '4',
+        //     'product_per_raws' => '10',
+        //     'total_product_qty' => 40,
+        //     'checkBox' => true,
+        //     'startDate' => '2024-01-25',
+        //     'endDate' => '2024-01-25',
+        //     'des' => 'test',
+        //     'language' => 'en',
+        //   )  
         # get caller file name
 		$callerFile = debug_backtrace()[0]['file'];
 		# get error occur line number from caller file
@@ -59,10 +64,15 @@ class TailorRawController extends Controller
             $tailor_id = $request->input("tailor_id");
             $date = $request->input("date");
             $product_id = $request->input("product_id");
+            $product_name = $request->input("productName");
             $size_id = $request->input("size_id");
+            $size_name = $request->input("sizeName");
             $category_id = $request->input("category_id");
             $raw1_id = $request->input("raw1_id");
+            $raw1_name = $request->input("raw1");
             $raw2_id = $request->input("raw2_id");
+            $raw2_name = ($request->input("raw2")) ? ','.$request->input("raw2") : '';
+            $raw_name = $raw1_name . $raw2_name;
             $raw_qty = $request->input("raw_qty");
             $product_per_raws = $request->input("product_per_raws");
             $total_product_qty = $request->input("total_product_qty");
@@ -95,7 +105,7 @@ class TailorRawController extends Controller
             "products_raw_id"=> $productRawId,
             "raw_qty"=> $raw_qty,
             "total_product_qty"=> $total_product_qty,
-            "descrption"=> $des,
+            "description"=> $des,
         );
         $insertTailorRaw = TailorRaw::insert($tailorRaw);
 
@@ -109,6 +119,13 @@ class TailorRawController extends Controller
             "out_qty"=> $total_product_qty,
             "in_qty"=> 0,
             "left_qty"=> $total_product_qty + $getLeftQty, // need to Modified
+            "products_raw_id"=> $productRawId,
+            "raw_qty"=> $raw_qty,
+            "total_product_qty"=> $total_product_qty,
+            "description"=> $des,
+            "product_name" => $product_name,
+            "size_name" => $size_name,
+            "raw_name" => $raw_name,
         );
         
         $insertTailorTransaction = TailorTransaction::insert($tailorTransaction);
@@ -140,45 +157,32 @@ class TailorRawController extends Controller
         $condition = [];
         $filter = [];
         if($request['tailor_id']){
-            $condition[] = ['tailor_raws.tailor_id',$request['tailor_id']];
+            $condition[] = ['tailor_transaction.tailor_id',$request['tailor_id']];
         }
         if($request['product_id']){
-            $filter[] =  ['product_id',$request['product_id']];
+            $condition[] =  ['product_id',$request['product_id']];
         }
         if($request['size_id']){
-            $filter[] =  ['size_id',$request['size_id']];
+            $condition[] =  ['size_id',$request['size_id']];
         }
 
-       // DB::enableQueryLog();
-        $tailorRawTrans = ProductRaw::with('productRaw1')
-        ->with('productRaw2')
-        ->with('productSize')
-        ->with('productProduct')
-        ->join('tailor_raws','tailor_raws.products_raw_id','=','products_raw.id')
-        ->join('tailor_transaction',function($query) use($filter) {
-            $query->on('tailor_transaction.created_at','=','tailor_raws.created_at');
-            $query->where( $filter);
-        })   
-        ->whereBetween('tailor_raws.date', [$request['start_date'], $request['end_date']])
-        ->where($condition)
-        ->get();
-        //log::info(DB::getQueryLog());
-
+        $tailorRawTrans = TailorTransaction::with('ProductsRaw')->where($condition)
+        ->whereBetween('date', [$request['startDate'],$request['endDate']])->get();
         $tailorRawTrans=$tailorRawTrans->toArray();
 
         $results = [];
         foreach($tailorRawTrans as $key => $tran){
             $results[$key]['no'] = $key + 1;
             $results[$key]['date'] = $tran['date'];
-            $results[$key]['code'] = $tran['product_product']['product_code'];
-            $results[$key]['name'] = $tran['product_product']['product_name'];
-            $results[$key]['size'] = $tran['product_size']['size'];
-            $results[$key]['rawQty'] = $tran['raw_qty'];
-            $results[$key]['rawCombine'] = $tran['raw_combination'];
-            $results[$key]['productPerRaw'] = $tran['product_per_raws'];
+            // $results[$key]['code'] = $tran['product_code'];
+            $results[$key]['code'] = '';
+            $results[$key]['name'] = $tran['product_name'];
+            $results[$key]['size'] = $tran['size_name'];
+            $results[$key]['rawQty'] = ($tran['raw_qty']) ? $tran['raw_qty'] : '';
+            $results[$key]['rawCombine'] = ($tran['products_raw']) ? $tran['products_raw']['raw_combination'] : '';
+            $results[$key]['productPerRaw'] = ($tran['products_raw']) ? $tran['products_raw']['product_per_raws'] : '';
             $results[$key]['totalProductQty'] = $tran['total_product_qty'];
-            $results[$key]['raw1'] = $tran['product_raw1']['name'];
-            $results[$key]['raw2'] = $tran['product_raw2']['name'];
+            $results[$key]['rawName'] = $tran['raw_name'];
             $results[$key]['outQty'] = $tran['out_qty'];
             $results[$key]['inQty'] = $tran['in_qty'];
             $results[$key]['leftQty'] = $tran['left_qty'];

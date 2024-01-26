@@ -18,7 +18,14 @@ class CreateTailorTransactionTable extends Migration
             $table->date('date');
             $table->integer('tailor_id')->comment('foreign Key from tailors');
             $table->integer('product_id')->comment('foreign Key from products');
+            $table->string('product_name');
             $table->integer('size_id');
+            $table->string('size_name');
+            $table->integer('products_raw_id');
+            $table->string('raw_name');
+            $table->integer('raw_qty');
+            $table->integer('total_product_qty');
+            $table->string('description',50);
             $table->integer('out_qty');
             $table->integer('in_qty');
             $table->integer('left_qty');
