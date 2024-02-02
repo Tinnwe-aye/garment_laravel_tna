@@ -71,8 +71,8 @@ class TailorRawController extends Controller
             $raw1_id = $request->input("raw1_id");
             $raw1_name = $request->input("raw1");
             $raw2_id = $request->input("raw2_id");
-            $raw2_name = ($request->input("raw2")) ? ','.$request->input("raw2") : '';
-            $raw_name = $raw1_name . $raw2_name;
+            $raw2_name = ($request->input("raw2")) ? $request->input("raw2") : '';
+            $raw_name = $raw1_name .','. $raw2_name;
             $raw_qty = $request->input("raw_qty");
             $product_per_raws = $request->input("product_per_raws");
             $total_product_qty = $request->input("total_product_qty");
@@ -82,6 +82,8 @@ class TailorRawController extends Controller
         $productsRaw =  array(
             "raw1_id"=> $raw1_id,
             "raw2_id"=> $raw2_id,
+            "raw1_name"=> $raw1_name,
+            "raw2_name"=> $raw2_name,
             "raw_combination"=> ($raw1_id && $raw2_id) ? "pairs" : "single",
             "product_per_raws"=> $product_per_raws
         );
@@ -256,5 +258,33 @@ class TailorRawController extends Controller
     public function destroy($id)
     {
         dd("destroy");
+    }
+
+    public function searchTailorRaw(Request $request){
+        $request=$request->all();
+
+        $condition = [];
+        if($request['tailor_id']){
+            $condition[] = ['tailor_raws.tailor_id',$request['tailor_id']];
+        }
+
+        $tailorRawTrans = TailorRaw::join('products_raw','tailor_raws.products_raw_id','=','products_raw.id')
+        ->join('tailors','tailors.id','=','tailor_raws.tailor_id')
+        ->where($condition)
+        ->whereBetween('date', [$request['startDate'],$request['endDate']])->get();
+        $tailorRawTrans=$tailorRawTrans->toArray();
+
+        if(!empty($tailorRawTrans)){
+            return response()->json([
+                'status'    =>  'OK',
+                'data'      => $tailorRawTrans,
+            ],200);
+        }else{
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER009'),
+            ],200);
+        }
+
     }
 }

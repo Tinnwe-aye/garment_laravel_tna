@@ -134,6 +134,7 @@ Route::prefix('tailor-raw')->group(function () {
     Route::get('edit/{id}',[TailorRawController::class, 'edit']);
     Route::put('update/{id}',[TailorRawController::class, 'update']);
     Route::post('destroy',[TailorRawController::class, 'destroy']);
+    Route::post('searchTailorRaw',[TailorRawController::class,   'searchTailorRaw']);
 });
 
 

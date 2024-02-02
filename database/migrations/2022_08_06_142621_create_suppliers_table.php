@@ -17,7 +17,7 @@ class CreateSuppliersTable extends Migration
             $table->id();
             $table->string('name_mm',50);
             $table->string('name_en',50);
-            $table->integer('phone_no');
+            $table->integer('phone_no')->length(11); 
             $table->string('email',50)->nullable();
             $table->string('businessName')->nullable();
             $table->string('address')->nullable();

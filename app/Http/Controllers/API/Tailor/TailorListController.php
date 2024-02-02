@@ -45,10 +45,10 @@ class TailorListController extends Controller
         try {
             $data = $this->tailorRepo->getTailorData();
             $tailorData = $data->map(function($data,$key) {
-                $status = ($data['status'] == 1) ? 'Active' : "Not Active";
+                // $status = ($data['status'] == 1) ? 'Active' : "Not Active";
                 return ["no"=>$key+1,"id"=>$data['id'],"tailorId"=>$data['tailor_id'],"nameMm"=>$data['name_mm'],
                         "nameEn"=>$data['name_en'],"phoneNo"=>$data['phone_no'],"nrcNo"=>$data['nrc_no']
-                        ,"description"=>$data['description'],"address"=>$data['address'],"status"=>$status];
+                        ,"description"=>$data['description'],"address"=>$data['address']];
             });
             $tailorData=json_decode($tailorData,true);
             return response()->json([

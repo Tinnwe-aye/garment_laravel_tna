@@ -97,7 +97,7 @@ class TailorRegistrationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {log::info($request->all());
+    {
         //
         $rules = [
             'login_id'          => 'required',

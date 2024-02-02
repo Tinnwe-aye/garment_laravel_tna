@@ -13,6 +13,14 @@ class ProductRaw extends Model
         'created_at' ,'updated_at'
     ];
 
-    protected $fillable = ['product_id','size_id','raw1_id','raw2_id','raw_combination','product_per_raws'];
+    protected $fillable = ['product_id','size_id','raw1_id','raw1_name','raw2_name','raw2_id','raw_combination','product_per_raws'];
+
+    public function raw1(){
+        return $this->hasOne(ProductRaw::class,'raw1_id','id');
+    }
+
+    public function raw2(){
+       return $this->hasOne(ProductRaw::class,'raw2_id','id');
+    }
 
 }
