@@ -17,6 +17,7 @@ use App\Http\Controllers\API\SupplierTransaction\SupplierTransactionListControll
 use App\Http\Controllers\API\Size\SizesController;
 use App\Http\Controllers\API\TailorRaw\TailorRawController;
 use App\Http\Controllers\API\Category\CategoryController;
+use App\Http\Controllers\API\User\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -135,6 +136,11 @@ Route::prefix('tailor-raw')->group(function () {
     Route::put('update/{id}',[TailorRawController::class, 'update']);
     Route::post('destroy',[TailorRawController::class, 'destroy']);
     Route::post('searchTailorRaw',[TailorRawController::class,   'searchTailorRaw']);
+});
+
+Route::prefix('users')->group(function () { 
+    Route::post('save',[UserController::class,'store']);
+    Route::post('login',[UserController::class,'login']);
 });
 
 
