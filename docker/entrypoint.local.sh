@@ -17,4 +17,4 @@ php artisan view:clear
 php artisan route:clear
 
 php-fpm -D
-nginx -g "daemon off;"
+nginx -g "daemon off;" 
