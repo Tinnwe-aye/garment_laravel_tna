@@ -25,7 +25,7 @@ class CreateTailorTransactionTable extends Migration
             $table->string('raw_name');
             $table->integer('raw_qty');
             $table->integer('total_product_qty');
-            $table->string('description',50);
+            $table->string('description',50)->nullable();
             $table->integer('out_qty');
             $table->integer('in_qty');
             $table->integer('left_qty');

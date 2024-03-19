@@ -29,17 +29,24 @@ class UserController extends Controller
     {
         $request = $request->all();
         $password = User::where("email", $request["email"])->select('password')->first();
-        if (password_verify($request["password"], $password->password)) {
-            // Password is correct, allow login
-            log::info('Login successful!');
-            return response()->json([
-                'status' =>  'OK',
-                'message' =>  trans(" "),
-                ],200);
+        if($password){
+            if (password_verify($request["password"], $password->password)) {
+                // Password is correct, allow login
+                log::info('Login successful!');
+                return response()->json([
+                    'status' =>  'OK',
+                    'message' =>  trans(" "),
+                    ],200);
 
+            } else {
+                // Password is incorrect
+                log::info('Login failed. Incorrect password.');
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans("Email and Password are not match."),
+                    ],200);
+            }
         } else {
-            // Password is incorrect
-            log::info('Login failed. Incorrect password.');
             return response()->json([
                 'status' =>  'NG',
                 'message' =>  trans("Email and Password are not match."),
