@@ -269,7 +269,7 @@ class TailorRawController extends Controller
         }
 
         $tailorRawTrans = TailorRaw::join('products_raw','tailor_raws.products_raw_id','=','products_raw.id')
-        ->join('tailors','tailors.id','=','tailor_raws.tailor_id')
+        ->join('tailors','tailors.tailor_id','=','tailor_raws.tailor_id')
         ->where($condition)
         ->whereBetween('date', [$request['startDate'],$request['endDate']])->get();
         $tailorRawTrans=$tailorRawTrans->toArray();
