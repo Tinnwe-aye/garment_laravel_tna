@@ -18,6 +18,7 @@ class CreateRawsTable extends Migration
             $table->string('name',50);
             $table->string('type',50)->nullable();
             $table->string('description',50)->nullable();
+            $table->integer('balance')->default(0);
             $table->softDeletes();
             $table->integer('created_emp');
             $table->integer('updated_emp');

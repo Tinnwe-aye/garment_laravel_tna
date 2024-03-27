@@ -6,6 +6,7 @@ use App\Models\SupplierTransaction;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Classes\UpdateRaw;
 
 class SupplierTransactionController extends Controller
 {
@@ -38,11 +39,23 @@ class SupplierTransactionController extends Controller
     public function store(Request $request)
     {
         // $this->validate($request, SupplierTransaction::validationRules());
-        SupplierTransaction::insert($request->all());
-        return response()->json([
-            'status'    =>  'OK',
-            'message'   =>  trans('successMessage.SS001'),
-        ],200); 
+        $insertSupTran = SupplierTransaction::insert($request->all());
+        
+        //Update balance in raws table        
+        $updateRaw = new UpdateRaw();
+        $updateRawData =  $updateRaw->updateRawRegisterDta($request['raw_id']);
+        
+        if($insertSupTran and $updateRawData){
+            return response()->json([
+                'status'    =>  'OK',
+                'message'   =>  trans('successMessage.SS001'),
+            ],200); 
+        } else {
+            return response()->json([
+                'status' =>  'NG',
+                'message' =>  trans('errorMessage.ER002'),
+            ],200);
+        }           
     }
 
     /**
@@ -89,4 +102,5 @@ class SupplierTransactionController extends Controller
     {
         //
     }
+
 }

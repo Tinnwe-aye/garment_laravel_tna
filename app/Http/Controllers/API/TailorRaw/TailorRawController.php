@@ -13,6 +13,7 @@ use App\Models\TailorRaw;
 use App\Models\ProductCategory;
 use App\Models\TailorTransaction;
 use App\Interfaces\Tailor\TailorRepositoryInterface;
+use App\Classes\UpdateRaw;
 
 class TailorRawController extends Controller
 {
@@ -69,30 +70,40 @@ class TailorRawController extends Controller
             $size_name = $request->input("sizeName");
             $category_id = $request->input("category_id");
             $raw1_id = $request->input("raw1_id");
+            $raw1_qty = $request->input("raw1_qty");
             $raw1_name = $request->input("raw1");
             $raw2_id = $request->input("raw2_id");
+            $raw2_qty = $request->input("raw2_qty");
             $raw2_name = ($request->input("raw2")) ? $request->input("raw2") : '';
             $raw_name = $raw1_name .','. $raw2_name;
+            $raw_id = $raw1_id .','. $raw2_id;
             $raw_qty = $request->input("raw_qty");
             $product_per_raws = $request->input("product_per_raws");
             $total_product_qty = $request->input("total_product_qty");
             $checkBox = $request->input("checkBox");
             $des = $request->input("des");
+            $raw_combination = ($raw1_id && $raw2_id) ? "pairs" : "single";
 
         $productsRaw =  array(
+            "product_id"=> $product_id,
+            "size_id"=> $size_id,
             "raw1_id"=> $raw1_id,
             "raw2_id"=> $raw2_id,
             "raw1_name"=> $raw1_name,
             "raw2_name"=> $raw2_name,
-            "raw_combination"=> ($raw1_id && $raw2_id) ? "pairs" : "single",
+            "raw1_qty"=> $raw1_qty,
+            "raw2_qty"=> $raw2_qty,
+            "raw_combination"=> $raw_combination,
             "product_per_raws"=> $product_per_raws
         );
-        $productsRawCheck = array(
-            "product_id"=> $product_id,
-            "size_id"=> $size_id,
-        );
+        
+        // $productsRawCheck = array(
+        //     "product_id"=> $product_id,
+        //     "size_id"=> $size_id,
+        // );
+        // $insertProductsRaw = ProductRaw::updateOrCreate($productsRawCheck,$productsRaw);
 
-        $insertProductsRaw = ProductRaw::updateOrCreate($productsRawCheck,$productsRaw);
+        $insertProductsRaw = ProductRaw::insert($productsRaw);
 
         $productCategory = array(
             "product_id"=> $product_id,
@@ -100,7 +111,7 @@ class TailorRawController extends Controller
         );
         $insertProductCategory = ProductCategory::updateOrCreate($productCategory);
 
-        $productRawId = ProductRaw::where(["product_id"=>$product_id,"size_id"=>$size_id])->first()->id;
+        $productRawId = ProductRaw::where(["product_id"=>$product_id,"size_id"=>$size_id])->latest('id')->first()->id;
         $tailorRaw = array(
             "date"=> $date,
             "tailor_id"=> $tailor_id,
@@ -128,9 +139,14 @@ class TailorRawController extends Controller
             "product_name" => $product_name,
             "size_name" => $size_name,
             "raw_name" => $raw_name,
+            "raw_id" => $raw_id,
         );
         
         $insertTailorTransaction = TailorTransaction::insert($tailorTransaction);
+
+       //Update balance in raws table        
+       $updateRaw = new UpdateRaw();
+       $updateRawData =  $updateRaw->updateRawRegisterDta($raw1_id,$raw2_id);
 
         DB::commit();
         return response()->json([
@@ -190,6 +206,8 @@ class TailorRawController extends Controller
             $results[$key]['leftQty'] = $tran['left_qty'];
             $results[$key]['description'] = $tran['description'];
         }
+
+
 
         if(!empty($results)){
             return response()->json([
@@ -287,4 +305,6 @@ class TailorRawController extends Controller
         }
 
     }
+
+
 }
