@@ -18,7 +18,7 @@ class CreateCustomerTable extends Migration
             $table->string('customer_id');
             $table->string('name_mm');
             $table->string('name_en');
-            $table->integer('phone_no')->length(11);
+            $table->string('phone_no',11);
             $table->string('email',50)->nullable();
             $table->string('nrc_no');
             $table->string('address');
