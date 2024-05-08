@@ -28,14 +28,15 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $request = $request->all();
-        $password = User::where("email", $request["email"])->select('password')->first();
-        if($password){
-            if (password_verify($request["password"], $password->password)) {
+        $userData = User::where("email", $request["email"])->first();
+        if($userData){
+            if (password_verify($request["password"], $userData->password)) {
                 // Password is correct, allow login
                 log::info('Login successful!');
                 return response()->json([
                     'status' =>  'OK',
                     'message' =>  trans(" "),
+                    'data'   =>   $userData,
                     ],200);
 
             } else {
