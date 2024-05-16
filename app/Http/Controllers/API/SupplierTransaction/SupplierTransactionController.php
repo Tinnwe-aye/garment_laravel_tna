@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Classes\UpdateRaw;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierTransactionController extends Controller
 {
@@ -39,6 +40,23 @@ class SupplierTransactionController extends Controller
     public function store(Request $request)
     {
         // $this->validate($request, SupplierTransaction::validationRules());
+        $rules = [
+            "supplier_id"=>"required",
+            "raw_id"=>"required",
+            "qty_pkg"=>"required|integer",
+            "qty"=>"required|integer",
+            "price"=>"required|integer",
+            "total_amount"=>"required|integer",
+        ];
+       
+        $validator = Validator::make($request->all(),$rules);
+        if($validator->fails()){
+            return response()->json([
+                "status"=>"NG",
+                "message"=>$validator->errors()->all()
+            ],200);
+        }
+        
         $insertSupTran = SupplierTransaction::insert($request->all());
         
         //Update balance in raws table        
