@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\Models\ProductRaw;
 use App\Models\TailorRaw;
 use App\Models\ProductCategory;
@@ -60,6 +61,23 @@ class TailorRawController extends Controller
 		$callerFile = debug_backtrace()[0]['file'];
 		# get error occur line number from caller file
 		$errorLineNo = debug_backtrace()[0]['line'];
+        log::info($request->all());
+        $rules = [
+            'tailor_id' => 'required',
+            'productName' => 'required',
+            'product_id' => 'required|integer',
+            'size_id' => 'required|integer',
+            'raw1_id' => 'required|integer',
+            'raw1_qty' => 'required|integer',
+            'product_per_raws' => 'required|integer'
+        ];
+        $validate = validator::make($request->all(),$rules);
+        if($validate->fails()){
+            return response()->json([
+                "status"=>"NG",
+                "message"=>$validate->errors()->all()],200);
+        }
+        
         DB::beginTransaction(); 
         try {   
             $tailor_id = $request->input("tailor_id");
@@ -73,7 +91,7 @@ class TailorRawController extends Controller
             $raw1_qty = $request->input("raw1_qty");
             $raw1_name = $request->input("raw1");
             $raw2_id = $request->input("raw2_id");
-            $raw2_qty = $request->input("raw2_qty");
+            $raw2_qty = $request->input("raw2_qty") ? $request->input("raw2_qty") : 0 ;
             $raw2_name = ($request->input("raw2")) ? $request->input("raw2") : '';
             $raw_name = $raw1_name .','. $raw2_name;
             $raw_id = $raw1_id .','. $raw2_id;
