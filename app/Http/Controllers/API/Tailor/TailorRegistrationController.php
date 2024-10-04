@@ -23,7 +23,7 @@ class TailorRegistrationController extends Controller
             'login_id'          => 'required',
             'name_mm'          => 'required',
             'name_en'        => 'required',
-            'phone_no'          => 'required|integer',
+            'phone_no'          => 'required',
             'nrc_no'        => 'required',
             'address'          => 'required',
             'tailor_id'        => 'required|integer'

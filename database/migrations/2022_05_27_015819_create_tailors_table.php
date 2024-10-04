@@ -18,13 +18,13 @@ class CreateTailorsTable extends Migration
             $table->integer('tailor_id');
             $table->string('name_mm');
             $table->string('name_en');
-            $table->integer('phone_no');
+            $table->string('phone_no')->length(15);
             $table->string('nrc_no');
             $table->string('address');
             $table->string('description')->nullable();
             $table->softDeletes();
-            $table->integer('created_emp');
-            $table->integer('updated_emp');
+            $table->integer('created_emp')->nullable();
+            $table->integer('updated_emp')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
