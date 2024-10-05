@@ -20,7 +20,7 @@ class CreateTailorRawsTable extends Migration
             $table->integer('products_raw_id');
             $table->integer('raw_qty');
             $table->integer('total_product_qty');
-            $table->string('description',50);
+            $table->string('description',50)->nullable();
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

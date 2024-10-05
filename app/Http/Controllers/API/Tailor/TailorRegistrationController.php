@@ -26,7 +26,7 @@ class TailorRegistrationController extends Controller
             'phone_no'          => 'required',
             'nrc_no'        => 'required',
             'address'          => 'required',
-            'tailor_id'        => 'required'
+            'tailor_id'        => 'required|integer'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {

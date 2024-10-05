@@ -17,14 +17,14 @@ class CreateSuppliersTable extends Migration
             $table->id();
             $table->string('name_mm',50);
             $table->string('name_en',50);
-            $table->integer('phone_no')->length(11); 
+            $table->string('phone_no')->length(15);
             $table->string('email',50)->nullable();
             $table->string('businessName')->nullable();
             $table->string('address')->nullable();
             $table->string('description')->nullable();
             $table->softDeletes();
-            $table->integer('created_emp');
-            $table->integer('updated_emp');
+            $table->integer('created_emp')->nullable();
+            $table->integer('updated_emp')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

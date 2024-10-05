@@ -49,6 +49,7 @@ class ProductInController extends Controller
     public function store(Request $request)
     {
         $request = $request->all();
+        log::info($request);
         $productInTran = array(
             'tailor_id'=> $request['tailor_id'],
             'Date' => $request['inDate'],
@@ -90,10 +91,12 @@ class ProductInController extends Controller
                 "product_name" => $productData['pName'],
                 "size_name" => $productData['pSize'],
                 "raw_name" => "",
+                "raw_id" => 0,
             );
             array_push( $tailorTransactionArr,$tailorTransaction);  
         }
         $insertproductInData = ProductInData::insert($productInArr);
+        // need to check insert data
         $insertTailorTransaction = TailorTransaction::insert($tailorTransactionArr);
 
         if (!$insertproductInData) {

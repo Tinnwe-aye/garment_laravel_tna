@@ -19,8 +19,10 @@ class CreateProductsRawTable extends Migration
             $table->integer('size_id')->comment('foreign Key from sizes');
             $table->integer('raw1_id');
             $table->string('raw1_name');
+            $table->integer('raw1_qty')->default(0);
             $table->integer('raw2_id')->nullable();
             $table->string('raw2_name')->nullable();
+            $table->integer('raw2_qty')->default(0);
             $table->string('raw_combination',11)->comment('single or pairs');
             $table->integer('product_per_raws');
             $table->softDeletes();
