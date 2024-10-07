@@ -76,7 +76,7 @@ class RawMaterialController extends Controller
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return false;
+            throw $th;
         }
     }
 
