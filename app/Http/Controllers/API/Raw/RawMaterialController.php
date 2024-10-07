@@ -31,7 +31,7 @@ class RawMaterialController extends Controller
                 'data'   =>   $data,
             ], 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
