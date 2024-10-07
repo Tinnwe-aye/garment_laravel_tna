@@ -30,7 +30,7 @@ class SupplierController extends Controller
             'address' => 'required'
         ];
         $validator = Validator::make($request->all(), $rules);
-        log::info($validator->errors()->all());
+        
         if ($validator->fails()) {
             return response()->json([
                 'status'    =>  'NG',
