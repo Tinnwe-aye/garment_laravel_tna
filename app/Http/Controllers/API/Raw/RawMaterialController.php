@@ -61,7 +61,6 @@ class RawMaterialController extends Controller
             // dd($request->name);
 
             Raws::insert([
-                "id"              => 1,
                 "name"              => $request->name,
                 "type"              => $request->type,
                 "description"       => $request->description,
