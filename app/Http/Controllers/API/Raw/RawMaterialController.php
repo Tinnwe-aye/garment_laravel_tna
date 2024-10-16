@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\Raw;
 
-use App\DBTransactions\Raw\saveRaw;
+use App\DBTransactions\Raw\SaveRaw;
 use App\Models\Raws;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
