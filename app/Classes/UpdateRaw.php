@@ -25,4 +25,18 @@ class UpdateRaw {
         return ['updateRaw1'=>$updateRaw1,'updateRaw2'=>$updateRaw2];
     }
 
+    public function updateRawqtyFromSupplierTran($supplierTransactionId){
+
+        foreach ($supplierTransactionId as $key => $id) {
+            $rawData = SupplierTransaction::where('id',$id)->first();
+            $rawId = $rawData->raw_id;
+            $qty = $rawData->qty;
+            $rawBalance =  Raws::where('id',$rawId)->first('balance');
+            $balance = $rawBalance->balance - $qty;
+            $rawUpdateFlag = Raws::where('id',$rawId)->update(['balance' =>  $balance]);
+        }
+
+        return $rawUpdateFlag;
+    }
+
 }

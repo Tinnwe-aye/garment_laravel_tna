@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\SupplierTransaction;
 use Illuminate\Http\Request;
 use App\Models\SupplierTransaction;
 use App\Http\Controllers\Controller;
+use App\Classes\UpdateRaw;
 use Illuminate\Support\Facades\Log;
 use App\DBTransactions\SupplierTransaction\RemoveSupplierTransaction;
 use App\Interfaces\SupplierTransaction\SupplierTransactionRepositoryInterface;
@@ -56,28 +57,11 @@ class SupplierTransactionListController extends Controller
 
     public function destroy(Request $request)
     {
-       
-        // try {
-        //     if (!SupplierTransaction::whereIn('id', $request->id)->exists()) {
-        //         return response()->json([
-        //             'status' =>  'NG',
-        //             'message'   =>  trans('errorMessage.ER007'),
-        //         ], 200);
-        //     }
-        //     SupplierTransaction::whereIn('id', $request->id)->whereNull('deleted_at')->delete();
-        //     return response()->json([
-        //         'status' => 'OK',
-        //         'message'   =>  trans('successMessage.SS003'),
-        //     ], 200);
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'status' =>  'NG',
-        //         'message' =>  trans('errorMessage.ER005'),
-        //     ], 200);
-        // }
-        // //
-
         try {
+            //Update balance in raws table   
+            $updateRaw = new UpdateRaw();
+            $updateRawQty = $updateRaw->updateRawqtyFromSupplierTran($request->id);
+
             $remove = new RemoveSupplierTransaction($request);
             $bool = $remove->process();
             if ($bool['status']) {
