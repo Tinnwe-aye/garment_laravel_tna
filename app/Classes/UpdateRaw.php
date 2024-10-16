@@ -19,10 +19,10 @@ class UpdateRaw {
         $outData1 = ProductRaw::where('raw1_id',$raw1id)->sum('raw1_qty');
         $outData2 = ProductRaw::where('raw2_id',$raw2id)->sum('raw2_qty');
 
-        $updateRaw = Raws::where('id',$raw1id)->update(['balance' =>  $inData1 - $outData1]);
-        $updateRaw = Raws::where('id',$raw2id)->update(['balance' =>  $inData2 - $outData2]);
+        $updateRaw1 = Raws::where('id',$raw1id)->update(['balance' =>  $inData1 - $outData1]);
+        $updateRaw2 = Raws::where('id',$raw2id)->update(['balance' =>  $inData2 - $outData2]);
 
-        return $updateRaw;
+        return ['updateRaw1'=>$updateRaw1,'updateRaw2'=>$updateRaw2];
     }
 
 }
