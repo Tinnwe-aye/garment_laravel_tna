@@ -63,7 +63,7 @@ class SupplierTransactionController extends Controller
         $updateRaw = new UpdateRaw();
         $updateRawData =  $updateRaw->updateRawRegisterDta($request['raw_id']);
         
-        if($insertSupTran and $updateRawData){
+        if($insertSupTran and $updateRawData['updateRaw1']){
             return response()->json([
                 'status'    =>  'OK',
                 'message'   =>  trans('successMessage.SS001'),
