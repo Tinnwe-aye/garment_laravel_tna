@@ -6,7 +6,7 @@ use App\Classes\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class saveRaw extends Transaction{
+class SaveRaw extends Transaction{
      //use LogTrait;
      private $request;
      //private $attendanceArray;
