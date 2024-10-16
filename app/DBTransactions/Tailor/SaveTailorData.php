@@ -26,7 +26,8 @@ class SaveTailorData extends Transaction  {
     {
         //$hashedPassword = hash('sha512', $this->request->password);
         //Insert into admins table
-        Tailor::insert([
+        $count = Tailor::count()+1;
+        $row = Tailor::create([
             "tailor_id"         => $this->request->tailor_id,
             "name_mm"           => $this->request->name_mm,
             "name_en"           => $this->request->name_en,
@@ -38,8 +39,9 @@ class SaveTailorData extends Transaction  {
             "updated_emp"       => $this->request->login_id,
 
         ]);
+        $row['no'] = $count;
 
-        return ['status' => true, 'error' => ''];
+        return ['status' => true, 'error' => 'false', 'data' => $row];
     }
 }
 ?>

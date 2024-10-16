@@ -38,11 +38,12 @@ class TailorRegistrationController extends Controller
         try {
             //create SaveTailorData Class to save data in db
             $save = new SaveTailorData($request);
-            $bool = $save->executeProcess();
-            if ($bool) {
+            $bool = $save->process();
+            if ($bool['status']) {
                 return response()->json([
                     'status'    =>  'OK',
                     'message'   =>  trans('successMessage.SS001'),
+                    'data' => $bool['data'],
                 ],200);
             }else{
                 return response()->json([

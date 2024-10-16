@@ -13,4 +13,6 @@ class Tailor extends Model
     protected $hidden = [
         'created_emp', 'updated_emp', 'created_at' ,'updated_at'
     ];
+
+    protected $fillable = ['tailor_id','name_mm','name_en','phone_no','nrc_no','address','description','created_emp','updated_emp'];
 }
