@@ -112,10 +112,11 @@ class CustomerController extends Controller
                 'data'   =>   $customerData,
             ],200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'status' =>  'NG',
-                'message' =>  trans('errorMessage.ER005'),
-            ],200);
+            throw $th;
+            // return response()->json([
+            //     'status' =>  'NG',
+            //     'message' =>  trans('errorMessage.ER005'),
+            // ],200);
         }
     }
 

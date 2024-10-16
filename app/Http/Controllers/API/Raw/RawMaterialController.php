@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Raw;
 
+use App\DBTransactions\Raw\saveRaw;
 use App\Models\Raws;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,25 +56,20 @@ class RawMaterialController extends Controller
             ], 200);
         }
         try {
-            DB::beginTransaction();
-
-            // Log:info($request);
-            // dd($request->name);
-
-            Raws::insert([
-                "name"              => $request->name,
-                "type"              => $request->type,
-                "description"       => $request->description,
-                "created_emp"       => $request->login_id,
-                "updated_emp"       => $request->login_id,
-
-            ]);
-            DB::commit();
-            //return true;
-            return response()->json([
-                'status'    =>  'OK',
-                'message'   =>  'Successfully completed!',
-            ], 200);
+            $save = new saveRaw($request);
+            $bool = $save->process();
+            if ($bool['status']) {
+                return response()->json([
+                    'status'    =>  'OK',
+                    'message'   =>  trans('successMessage.SS001'),
+                    'data' => $bool['data'],
+                ],200);
+            }else{
+                return response()->json([
+                    'status' =>  'NG',
+                    'message' =>  trans('errorMessage.ER005'),
+                ],200);
+            }
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;

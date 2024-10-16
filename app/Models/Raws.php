@@ -14,4 +14,6 @@ class Raws extends Model
         'created_emp', 'updated_emp', 'created_at' ,'updated_at'
     ];
 
+    protected $fillable = ['name','type','description', 'created_emp', 'updated_emp'];
+
 }
