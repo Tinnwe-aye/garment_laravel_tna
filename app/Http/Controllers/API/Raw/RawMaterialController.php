@@ -56,7 +56,7 @@ class RawMaterialController extends Controller
             ], 200);
         }
         try {
-            $save = new saveRaw($request);
+            $save = new SaveRaw($request);
             $bool = $save->process();
             if ($bool['status']) {
                 return response()->json([
